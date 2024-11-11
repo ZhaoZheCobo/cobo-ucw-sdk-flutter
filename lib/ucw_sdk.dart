@@ -2,10 +2,9 @@
 import 'ucw_sdk_platform_interface.dart';
 import 'package:ucw_sdk/data.dart';
 
-class UcwSdk {
-  Future<String?> getPlatformVersion() {
-    return UcwSdkPlatform.instance.getPlatformVersion();
-  }
+
+Future<String?> getPlatformVersion() {
+  return UcwSdkPlatform.instance.getPlatformVersion();
 }
 
 Future<String> initializeSecrets(String secretsFile, String passphrase) async {
@@ -23,4 +22,8 @@ Future<String> initializeSecrets(String secretsFile, String passphrase) async {
   } catch (e) {
     throw Exception('Failed to initialize secrets: $e');
   }
+}
+
+class UCW {
+
 }
