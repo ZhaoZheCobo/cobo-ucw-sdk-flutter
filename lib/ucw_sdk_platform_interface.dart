@@ -26,4 +26,8 @@ abstract class UcwSdkPlatform extends PlatformInterface {
   Future<String?> getPlatformVersion() {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
+
+  Future<T?> call<T>(String method, [dynamic arguments]) {
+    throw UnimplementedError('platformVersion() has not been implemented.');
+  }
 }

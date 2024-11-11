@@ -14,4 +14,10 @@ class MethodChannelUcwSdk extends UcwSdkPlatform {
     final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
   }
+
+  @override
+  Future<T?> call<T>(String method, [dynamic arguments]) async {
+    final response = await methodChannel.invokeMethod(method, arguments);
+    return response;
+  }
 }

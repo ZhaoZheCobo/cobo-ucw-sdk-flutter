@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
+import 'ucw_sdk_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -50,12 +51,34 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+      home: MainPage(),
+    );
+  }
+}
+
+
+class MainPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('UCW SDK Plugin Demo'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UCWSDKDemo()),
+                );
+              },
+              child: Text('UCW SDK Demo'),
+            ),
+            SizedBox(height: 20),
+          ],
         ),
       ),
     );
