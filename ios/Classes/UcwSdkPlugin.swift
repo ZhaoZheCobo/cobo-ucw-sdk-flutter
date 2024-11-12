@@ -282,6 +282,83 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     self._handleTssResult(tssResult: TssRejectTransactions(handler, jsonTransactionIDs, reason), flutterResult: flutterResult)
   }
 
+  // export
+  func exportSecrets(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
+    guard let handler = arguments["handler"] as? String,
+      let exportPassphrase = arguments["exportPassphrase"] as? String else {
+      flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
+      return
+    }
+    self._handleTssResultWithData(tssResult: TssExportSecrets(handler, exportPassphrase), flutterResult: flutterResult)
+  }
+
+  func exportRecoveryKeyShares(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
+    guard let handler = arguments["handler"] as? String,
+      let tssKeyShareGroupIDs = arguments["tssKeyShareGroupIDs"] as? [String],
+      let exportPassphrase = arguments["exportPassphrase"] as? String else {
+      flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
+      return
+    }
+
+    let jsonData: Data
+    do {
+      jsonData = try JSONSerialization.data(withJSONObject: tssKeyShareGroupIDs, options: [])
+    } catch {
+      flutterResult(FlutterError(code: "Invalid arguments", message: "Convert groupIDs to JSON string error: \(error)", details: nil))
+      return
+    }
+
+    guard let jsonGroupIDs = String(data: jsonData, encoding: .utf8) else {
+      flutterResult(FlutterError(code: "Invalid arguments", message: "Convert groupIDs to JSON string error", details: nil))
+      return
+    }
+    self._handleTssResultWithData(tssResult: TssExportRecoveryKeyShares(handler, jsonGroupIDs, exportPassphrase), flutterResult: flutterResult)
+  }
+
+  // recovery
+  func importRecoveryKeyShare(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
+    guard let tssKeyShareGroupID = arguments["tssKeyShareGroupID"] as? String,
+      let jsonRecoverySecrets = arguments["jsonRecoverySecrets"] as? String,
+      let exportPassphrase = arguments["exportPassphrase"] as? String else {
+      flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
+      return
+    }
+    self._handleTssResult(tssResult: TssImportRecoveryKeyShare(tssKeyShareGroupID, jsonRecoverySecrets, exportPassphrase), flutterResult: flutterResult)
+  }
+
+  func recoverPrivateKeys(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
+    guard let handler = arguments["handler"] as? String,
+      let jsonAddressInfos = arguments["jsonAddressInfos"] as? String else {
+      flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
+      return
+    }
+    self._handleTssResultWithData(tssResult: TssRecoverPrivateKeys(handler, jsonAddressInfos), flutterResult: flutterResult)
+  }
+
+  func cleanRecoveryKeyShares() {
+    TssCleanRecoveryKeyShares()
+  }
+
+  // import
+  func importSecrets(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
+    guard let jsonRecoverySecrets = arguments["jsonRecoverySecrets"] as? String,
+      let exportPassphrase = arguments["exportPassphrase"] as? String,
+      let newSecretsFile = arguments["newSecretsFile"] as? String,
+      let newPassphrase = arguments["newPassphrase"] as? String else {
+      flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
+      return
+    }
+    self._handleTssResult(tssResult: TssImportSecrets(jsonRecoverySecrets, exportPassphrase, newSecretsFile, newPassphrase), flutterResult: flutterResult)
+  }
+
+  // others
+  func getSDKInfo(flutterResult: @escaping FlutterResult) {
+    self._handleTssResultWithData(tssResult: TssGetSDKInfo(), flutterResult: flutterResult)
+  }
+
+  func setLogger(flutterResult: @escaping FlutterResult) {
+    TssSetLogger(TssLogger(flutterResult: flutterResult))
+  }
 
   // internal
   func _handleTssResult(tssResult: TssResult?, flutterResult: @escaping FlutterResult) {
