@@ -45,6 +45,22 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
       approveTransactions(arguments: arguments, flutterResult: result)
     case "rejectTransactions":
       rejectTransactions(arguments: arguments, flutterResult: result)
+    case "exportSecrets":
+        exportSecrets(arguments: arguments, flutterResult: result)
+    case "exportRecoveryKeyShares":
+        exportRecoveryKeyShares(arguments: arguments, flutterResult: result)
+    case "importRecoveryKeyShare":
+        importRecoveryKeyShare(arguments: arguments, flutterResult: result)
+    case "recoverPrivateKeys":
+        recoverPrivateKeys(arguments: arguments, flutterResult: result)
+    case "cleanRecoveryKeyShares":
+        cleanRecoveryKeyShares()
+    case "importSecrets":
+        importSecrets(arguments: arguments, flutterResult: result)
+    case "getSDKInfo":
+        getSDKInfo(flutterResult: result)
+    case "setLogger":
+        setLogger(flutterResult: result)
     default:
       result(FlutterMethodNotImplemented)
     }
