@@ -24,7 +24,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     case "close":
       close(arguments: arguments, flutterResult: result)
     case "getTSSNodeID":
-      getNodeInfo(arguments: arguments, flutterResult: result) 
+      getTSSNodeID(arguments: arguments, flutterResult: result) 
     case "listTSSKeyShareGroups":
       listTSSKeyShareGroups(arguments: arguments, flutterResult: result)
     case "getTSSKeyShareGroups":
