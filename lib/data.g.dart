@@ -55,3 +55,73 @@ Map<String, dynamic> _$TSSKeyShareGroupToJson(TSSKeyShareGroup instance) =>
       'curve': instance.curve,
       'threshold': instance.threshold,
     };
+
+TSSRequestResult _$TSSRequestResultFromJson(Map<String, dynamic> json) =>
+    TSSRequestResult(
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => TSSRequest.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$TSSRequestResultToJson(TSSRequestResult instance) =>
+    <String, dynamic>{
+      'data': instance.data,
+    };
+
+TSSRequest _$TSSRequestFromJson(Map<String, dynamic> json) => TSSRequest(
+      tssRequestID: json['tss_request_id'] as String,
+      status: $enumDecode(_$StatusEnumMap, json['status']),
+      results: (json['results'] as List<dynamic>?)
+          ?.map((e) => TSSKeyShareGroup.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      failedReasons: (json['failed_reasons'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$TSSRequestToJson(TSSRequest instance) =>
+    <String, dynamic>{
+      'tss_request_id': instance.tssRequestID,
+      'status': _$StatusEnumMap[instance.status]!,
+      'results': instance.results,
+      'failed_reasons': instance.failedReasons,
+    };
+
+const _$StatusEnumMap = {
+  Status.unknown: 'unknown',
+  Status.scheduling: 'scheduling',
+  Status.initializing: 'initializing',
+  Status.approving: 'approving',
+  Status.processing: 'processing',
+  Status.declined: 'declined',
+  Status.failed: 'failed',
+  Status.canceled: 'canceled',
+  Status.completed: 'completed',
+};
+
+TransactionResult _$TransactionResultFromJson(Map<String, dynamic> json) =>
+    TransactionResult(
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => Transaction.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$TransactionResultToJson(TransactionResult instance) =>
+    <String, dynamic>{
+      'data': instance.data,
+    };
+
+Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
+      transactionID: json['transaction_id'] as String,
+      status: $enumDecode(_$StatusEnumMap, json['status']),
+      failedReasons: (json['failed_reasons'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
+    <String, dynamic>{
+      'transaction_id': instance.transactionID,
+      'status': _$StatusEnumMap[instance.status]!,
+      'failed_reasons': instance.failedReasons,
+    };
