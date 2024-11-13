@@ -63,24 +63,80 @@ class _UCWPublicDemoState extends State<UCWPublicDemo> {
   }
 }
 
+String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
+late UCWPublic instanceUCWPublic;
+
 class DoUCWPublic {
 
-   Future<String> doMethods() async {
+  Future<String> doMethods() async {
+    String resultStr = '';
+    resultStr += await doOpenPublic();
+    resultStr += await doGetTSSNodeID();
+    resultStr += await doGetTSSKeyShareGroups();
+    resultStr += await doListTSSKeyShareGroups();
+    instanceUCWPublic.dispose();
+    return resultStr;
+  }
+
+  Future<String> doOpenPublic() async {
     String resultStr = '';
     try {
-      String database = '~/ucw_sdk_flutter_plugin/secrets.db';
-      String passphrase = '1234567890123456';
-      resultStr += 'Do initialize secrets\n';
-      final result = await initializeSecrets(database, passphrase);
-      resultStr += 'TSS Node ID: $result\n';
-
+      resultStr += 'Do openPublic\n';
+      instanceUCWPublic = UCWPublic(secretsFile: secretsFile); 
+      await instanceUCWPublic.init();
       return resultStr;
     } catch (e) {
-      
-      print('Failed to execute UCW Public methods: $e');
-
-      resultStr +=  'Failed to execute UCW Public methods: $e';
+      resultStr += 'Failed to openPublic: $e\n';
       return resultStr;
     }
+  }
+
+  Future<String> doGetTSSNodeID() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do getTSSNodeID\n';
+      final tssNodeID = await instanceUCWPublic.getTSSNodeID();
+      resultStr += 'TSS Node ID: $tssNodeID\n';
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to getTSSNodeID: $e\n';
+      return resultStr;
+    }
+  }
+
+  Future<String> doGetTSSKeyShareGroups() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do getTSSKeyShareGroups\n';
+      final groups = await instanceUCWPublic.getTSSKeyShareGroups(['mockID']);
+      resultStr += 'TSS Key Share Groups: ${groups.length}\n';
+      for (var group in groups) {
+        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, Name: ${group.rootPubKey}\n';
+      }
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to getTSSKeyShareGroups: $e\n';
+      return resultStr;
+    }
+  }
+
+  Future<String> doListTSSKeyShareGroups() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do listTSSKeyShareGroups\n';
+      final groups = await instanceUCWPublic.listTSSKeyShareGroups();
+      resultStr += 'TSS Key Share Groups (list): ${groups.length}\n';
+      for (var group in groups) {
+        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, Name: ${group.rootPubKey}\n';
+      }
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to listTSSKeyShareGroups: $e\n';
+      return resultStr;
+    }
+  }
+
+  Future<void> dispose() async {
+    instanceUCWPublic.dispose();
   }
 }

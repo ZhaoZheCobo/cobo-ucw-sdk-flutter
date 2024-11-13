@@ -63,9 +63,8 @@ class _UCWDemoState extends State<UCWDemo> {
   }
 }
 
-String database = '~/ucw_sdk_flutter_plugin/secrets.db';
+String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
 String passphrase = '1234567890123456';
-
 
 class DoUCW {
 
@@ -80,17 +79,12 @@ class DoUCW {
   Future<String> doInitializeSecrets() async {
     String resultStr = '';
     try {
-
       resultStr += 'Do initialize secrets\n';
-      final result = await initializeSecrets(database, passphrase);
+      final result = await initializeSecrets(secretsFile, passphrase);
       resultStr += 'TSS Node ID: $result\n';
-
       return resultStr;
     } catch (e) {
-      
-      print('Failed to execute UCW methods: $e');
-
-      resultStr +=  'Failed to execute UCW methods: $e';
+      resultStr += 'Failed to initialize secrets: $e\n';
       return resultStr;
     }
   }
