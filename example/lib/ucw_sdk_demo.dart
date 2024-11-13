@@ -3,14 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
 
 class UCWSDKDemo extends StatefulWidget {
-  const UCWSDKDemo({Key? key}) : super(key: key);
+  const UCWSDKDemo({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _UCWSDKDemoState createState() => _UCWSDKDemoState();
 }
 
 class _UCWSDKDemoState extends State<UCWSDKDemo> {
-  TextEditingController _displayController = TextEditingController();
+  final TextEditingController _displayController = TextEditingController();
 
   @override
   void dispose() {
@@ -30,7 +31,7 @@ class _UCWSDKDemoState extends State<UCWSDKDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('UCW SDK Demo'),
+        title: const Text('UCW SDK Demo'),
       ),
       body: Center(
         child: Column(
@@ -38,12 +39,12 @@ class _UCWSDKDemoState extends State<UCWSDKDemo> {
           children: [
             ElevatedButton(
               onPressed: _executeMethods,
-              child: Text('test UCWSDK methods'),
+              child: const Text('test UCWSDK methods'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               height: 500,
-              padding: EdgeInsets.all(8.0),
+              padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
                 borderRadius: BorderRadius.circular(5.0),
@@ -52,7 +53,7 @@ class _UCWSDKDemoState extends State<UCWSDKDemo> {
                 controller: _displayController,
                 readOnly: true,
                 maxLines: null,
-                decoration: InputDecoration.collapsed(hintText: ''),
+                decoration: const InputDecoration.collapsed(hintText: ''),
               ),
             ),
           ],
@@ -71,7 +72,7 @@ class DoUCWSDK {
       String passphrase = '1234567890123456';
       resultStr += 'Do initialize secrets\n';
       final result = await initializeSecrets(database, passphrase);
-      resultStr += 'TSS Node ID: ${result}\n';
+      resultStr += 'TSS Node ID: $result\n';
 
       return resultStr;
     } catch (e) {

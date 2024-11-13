@@ -49,7 +49,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: MainPage(),
     );
   }
@@ -57,11 +57,13 @@ class _MyAppState extends State<MyApp> {
 
 
 class MainPage extends StatelessWidget {
+  const MainPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('UCW SDK Plugin Demo'),
+        title: const Text('UCW SDK Plugin Demo'),
       ),
       body: Center(
         child: Column(
@@ -71,12 +73,12 @@ class MainPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => UCWSDKDemo()),
+                  MaterialPageRoute(builder: (context) => const UCWSDKDemo()),
                 );
               },
-              child: Text('UCW SDK Demo'),
+              child: const Text('UCW SDK Demo'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
           ],
         ),
       ),
