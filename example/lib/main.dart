@@ -3,7 +3,8 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
-import 'ucw_sdk_demo.dart';
+import 'ucw_demo.dart';
+import 'ucw_public_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -73,10 +74,19 @@ class MainPage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const UCWSDKDemo()),
+                  MaterialPageRoute(builder: (context) => const UCWDemo()),
                 );
               },
-              child: const Text('UCW SDK Demo'),
+              child: const Text('UCW Demo'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UCWPublicDemo()),
+                );
+              },
+              child: const Text('UCW Public Demo'),
             ),
             const SizedBox(height: 20),
           ],

@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 // import 'package:ucw_sdk/type.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
 
-class UCWSDKDemo extends StatefulWidget {
-  const UCWSDKDemo({super.key});
+class UCWPublicDemo extends StatefulWidget {
+  const UCWPublicDemo({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
-  _UCWSDKDemoState createState() => _UCWSDKDemoState();
+  _UCWPublicDemoState createState() => _UCWPublicDemoState();
 }
 
-class _UCWSDKDemoState extends State<UCWSDKDemo> {
+class _UCWPublicDemoState extends State<UCWPublicDemo> {
   final TextEditingController _displayController = TextEditingController();
 
   @override
@@ -20,8 +20,8 @@ class _UCWSDKDemoState extends State<UCWSDKDemo> {
   }
 
   Future<void> _executeMethods() async {
-    final doUCWSDK = DoUCWSDK();
-    String result = await doUCWSDK.doMethods();
+    final doUCWPublic = DoUCWPublic();
+    String result = await doUCWPublic.doMethods();
     setState(() {
       _displayController.text = result;
     });
@@ -31,7 +31,7 @@ class _UCWSDKDemoState extends State<UCWSDKDemo> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('UCW SDK Demo'),
+        title: const Text('UCW Public Demo'),
       ),
       body: Center(
         child: Column(
@@ -39,7 +39,7 @@ class _UCWSDKDemoState extends State<UCWSDKDemo> {
           children: [
             ElevatedButton(
               onPressed: _executeMethods,
-              child: const Text('test UCWSDK methods'),
+              child: const Text('test UCW Public methods'),
             ),
             const SizedBox(height: 20),
             Container(
@@ -63,7 +63,7 @@ class _UCWSDKDemoState extends State<UCWSDKDemo> {
   }
 }
 
-class DoUCWSDK {
+class DoUCWPublic {
 
    Future<String> doMethods() async {
     String resultStr = '';
@@ -77,9 +77,9 @@ class DoUCWSDK {
       return resultStr;
     } catch (e) {
       
-      print('Failed to execute UCWSDK methods: $e');
+      print('Failed to execute UCW Public methods: $e');
 
-      resultStr +=  'Failed to execute UCWSDK methods: $e';
+      resultStr +=  'Failed to execute UCW Public methods: $e';
       return resultStr;
     }
   }
