@@ -149,7 +149,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
   // TSS Request
   func listPendingTSSRequests(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
     guard let handler = arguments["handler"] as? String,
-      let timeout = arguments["timeout"] as? [Int32] else {
+      let timeout = arguments["timeout"] as? Int32 else {
       flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
       return
     }
@@ -159,7 +159,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
   func getTSSRequests(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
     guard let handler = arguments["handler"] as? String,
       let tssRequestIDs = arguments["tssRequestIDs"] as? [String],
-      let timeout = arguments["timeout"] as? [Int32] else {
+      let timeout = arguments["timeout"] as? Int32 else {
       flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
       return
     }
@@ -224,7 +224,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
   // Transaction
   func listPendingTransactions(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
     guard let handler = arguments["handler"] as? String,
-      let timeout = arguments["timeout"] as? [Int32] else {
+      let timeout = arguments["timeout"] as? Int32 else {
       flutterResult(FlutterError(code: "IInvalid arguments", message: "Missing arguments", details: nil))
       return
     }
@@ -234,7 +234,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
   func getTransactions(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
     guard let handler = arguments["handler"] as? String,
       let transactionIDs = arguments["transactionIDs"] as? [String],
-      let timeout = arguments["timeout"] as? [Int32] else {
+      let timeout = arguments["timeout"] as? Int32 else {
       flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
       return
     }
@@ -364,7 +364,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
       flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
       return
     }
-    self._handleTssResult(tssResult: TssImportSecrets(jsonRecoverySecrets, exportPassphrase, newSecretsFile, newPassphrase), flutterResult: flutterResult)
+    self._handleTssResultWithData(tssResult: TssImportSecrets(jsonRecoverySecrets, exportPassphrase, newSecretsFile, newPassphrase), flutterResult: flutterResult)
   }
 
   // others

@@ -14,19 +14,12 @@ Future<T?> _call<T>(String method, [dynamic arguments]) async {
 
 Future<String> initializeSecrets(String secretsFile, String passphrase) async {
   try {
-    final Map<String, dynamic> arguments = {
-      'secretsFile': secretsFile,
-      'passphrase': passphrase,
-    };
+    final arguments = {'secretsFile': secretsFile, 'passphrase': passphrase};
     final result = await _call('initializeSecrets', arguments);
     if (result == null) {
       throw Exception('Received null result');
     }
     final nodeResult = NodeResult.fromJson(Map<String, dynamic>.from(result));
-    if (nodeResult.tssNodeID == null) {
-      throw Exception('tssNodeID is null');
-    }
-
     return nodeResult.tssNodeID;
   } catch (e) {
     throw Exception('Failed to initialize secrets: $e');
@@ -37,23 +30,22 @@ class UCWPublic {
   String? handler;
   final String secretsFile;
 
-  UCWPublic({required this.secretsFile}) {
-    handler = null;
-    _openPublic();
+  UCWPublic({required this.secretsFile});
+
+  Future<void> init() async {
+    await _openPublic();
   }
 
-  void dispose() {
+  void dispose() async {
     print("UCWPublic deinitialization");
-    _close();
+    await _close();
   }
 
   Future<void> _openPublic() async {
     try {
-      final Map<String, dynamic> arguments = {
-        'secretsFile': secretsFile,
-      };
+      final arguments = {'secretsFile': secretsFile};
       final result = await _call('openPublic', arguments);
-       if (result == null) {
+      if (result == null) {
         throw Exception('Received null result');
       }
       final handlerResult = HandlerResult.fromJson(Map<String, dynamic>.from(result));
@@ -65,10 +57,9 @@ class UCWPublic {
 
   Future<void> _close() async {
     try {
-      final Map<String, dynamic> arguments = {
-        'handler': handler,
-      };
+      final arguments = {'handler': handler};
       await _call('close', arguments);
+      handler = null;
     } catch (e) {
       throw Exception('Failed to close: $e');
     }
@@ -76,18 +67,12 @@ class UCWPublic {
 
   Future<String> getTSSNodeID() async {
     try {
-      final Map<String, dynamic> arguments = {
-        'handler': handler,
-      };
+      final arguments = {'handler': handler};
       final result = await _call('getTSSNodeID', arguments);
       if (result == null) {
         throw Exception('Received null result');
       }
       final nodeResult = NodeResult.fromJson(Map<String, dynamic>.from(result));
-      if (nodeResult.tssNodeID == null) {
-        throw Exception('tssNodeID is null');
-      }
-
       return nodeResult.tssNodeID;
     } catch (e) {
       throw Exception('Failed to getTSSNodeID: $e');
@@ -96,11 +81,8 @@ class UCWPublic {
 
   Future<List<TSSKeyShareGroup>> getTSSKeyShareGroups(List<String> tssKeyShareGroupIDs) async {
     try {
-      final Map<String, dynamic> arguments = {
-        'handler': handler,
-        'tssKeyShareGroupIDs': tssKeyShareGroupIDs,
-      };
-      var result = await _call('getTSSKeyShareGroups', arguments);
+      final arguments = {'handler': handler, 'tssKeyShareGroupIDs': tssKeyShareGroupIDs};
+      final result = await _call('getTSSKeyShareGroups', arguments);
       if (result == null) {
         throw Exception('Received null result');
       }
@@ -113,10 +95,8 @@ class UCWPublic {
 
   Future<List<TSSKeyShareGroup>> listTSSKeyShareGroups() async {
     try {
-      final Map<String, dynamic> arguments = {
-        'handler': handler,
-      };
-      var result = await _call('listTSSKeyShareGroups', arguments);
+      final arguments = {'handler': handler};
+      final result = await _call('listTSSKeyShareGroups', arguments);
       if (result == null) {
         throw Exception('Received null result');
       }
