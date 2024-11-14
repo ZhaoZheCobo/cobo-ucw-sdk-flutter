@@ -83,9 +83,8 @@ Map<String, dynamic> _$SDKInfoToJson(SDKInfo instance) => <String, dynamic>{
     };
 
 GroupResult _$GroupResultFromJson(Map<String, dynamic> json) => GroupResult(
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => TSSKeyShareGroup.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      data: GroupResult._tssKeyShareGroupListFromUntypedJson(
+          json['data'] as List?),
     );
 
 Map<String, dynamic> _$GroupResultToJson(GroupResult instance) =>
@@ -96,21 +95,45 @@ Map<String, dynamic> _$GroupResultToJson(GroupResult instance) =>
 TSSKeyShareGroup _$TSSKeyShareGroupFromJson(Map<String, dynamic> json) =>
     TSSKeyShareGroup(
       tssKeyShareGroupID: json['id'] as String,
-      createdTimestamp: json['created_timestamp'] as String,
+      createdTimestamp: json['created_timestamp'] as int,
+      type: $enumDecode(_$GroupTypeEnumMap, json['type']),
       rootPubKey: json['root_extended_public_key'] as String,
       chainCode: json['chaincode'] as String,
       curve: json['curve'] as String,
       threshold: json['threshold'] as int,
+      participants: TSSKeyShareGroup._sharePublicDataListFromUntypedJson(
+          json['participants'] as List?),
     );
 
 Map<String, dynamic> _$TSSKeyShareGroupToJson(TSSKeyShareGroup instance) =>
     <String, dynamic>{
       'id': instance.tssKeyShareGroupID,
       'created_timestamp': instance.createdTimestamp,
+      'type': _$GroupTypeEnumMap[instance.type]!,
       'root_extended_public_key': instance.rootPubKey,
       'chaincode': instance.chainCode,
       'curve': instance.curve,
       'threshold': instance.threshold,
+      'participants': instance.participants,
+    };
+
+const _$GroupTypeEnumMap = {
+  GroupType.ecdsaTSS: 'ecdsaTSS',
+  GroupType.eddsaTSS: 'eddsaTSS',
+};
+
+SharePublicData _$SharePublicDataFromJson(Map<String, dynamic> json) =>
+    SharePublicData(
+      tssNodeID: json['node_id'] as String,
+      shareID: json['share_id'] as String,
+      sharePubKey: json['share_public_key'] as String,
+    );
+
+Map<String, dynamic> _$SharePublicDataToJson(SharePublicData instance) =>
+    <String, dynamic>{
+      'node_id': instance.tssNodeID,
+      'share_id': instance.shareID,
+      'share_public_key': instance.sharePubKey,
     };
 
 TSSRequestResult _$TSSRequestResultFromJson(Map<String, dynamic> json) =>
@@ -127,9 +150,8 @@ Map<String, dynamic> _$TSSRequestResultToJson(TSSRequestResult instance) =>
 TSSRequest _$TSSRequestFromJson(Map<String, dynamic> json) => TSSRequest(
       tssRequestID: json['tss_request_id'] as String,
       status: $enumDecode(_$StatusEnumMap, json['status']),
-      results: (json['results'] as List<dynamic>?)
-          ?.map((e) => TSSKeyShareGroup.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      results: TSSRequest._tssKeyShareGroupListFromUntypedJson(
+          json['results'] as List?),
       failedReasons: (json['failed_reasons'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -157,9 +179,8 @@ const _$StatusEnumMap = {
 
 TransactionResult _$TransactionResultFromJson(Map<String, dynamic> json) =>
     TransactionResult(
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => Transaction.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      data: TransactionResult._transactionListFromUntypedJson(
+          json['data'] as List?),
     );
 
 Map<String, dynamic> _$TransactionResultToJson(TransactionResult instance) =>
@@ -170,6 +191,10 @@ Map<String, dynamic> _$TransactionResultToJson(TransactionResult instance) =>
 Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       transactionID: json['transaction_id'] as String,
       status: $enumDecode(_$StatusEnumMap, json['status']),
+      signDetails: Transaction._signDetailListFromUntypedJson(
+          json['sign_details'] as List?),
+      results:
+          Transaction._signaturesListFromUntypedJson(json['results'] as List?),
       failedReasons: (json['failed_reasons'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -179,5 +204,61 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     <String, dynamic>{
       'transaction_id': instance.transactionID,
       'status': _$StatusEnumMap[instance.status]!,
+      'sign_details': instance.signDetails,
+      'results': instance.results,
       'failed_reasons': instance.failedReasons,
+    };
+
+SignDetail _$SignDetailFromJson(Map<String, dynamic> json) => SignDetail(
+      signatureType: json['signature_type'] as int,
+      tssProtocol: json['tss_protocol'] as int,
+      bip32PathList: (json['bip32_path_list'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      msgHashList: (json['msg_hash_list'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+      tweakList: (json['tweak_list'] as List<dynamic>?)
+          ?.map((e) => e as String)
+          .toList(),
+    );
+
+Map<String, dynamic> _$SignDetailToJson(SignDetail instance) =>
+    <String, dynamic>{
+      'signature_type': instance.signatureType,
+      'tss_protocol': instance.tssProtocol,
+      'bip32_path_list': instance.bip32PathList,
+      'msg_hash_list': instance.msgHashList,
+      'tweak_list': instance.tweakList,
+    };
+
+Signatures _$SignaturesFromJson(Map<String, dynamic> json) => Signatures(
+      signatures: (json['signatures'] as List<dynamic>?)
+          ?.map((e) => Signature.fromJson(e as Map<String, dynamic>))
+          .toList(),
+      signatureType: json['signature_type'] as int?,
+      tssProtocol: json['tss_protocol'] as int?,
+    );
+
+Map<String, dynamic> _$SignaturesToJson(Signatures instance) =>
+    <String, dynamic>{
+      'signatures': instance.signatures,
+      'signature_type': instance.signatureType,
+      'tss_protocol': instance.tssProtocol,
+    };
+
+Signature _$SignatureFromJson(Map<String, dynamic> json) => Signature(
+      bip32Path: json['bip32_path'] as String,
+      msgHash: json['msg_hash'] as String,
+      tweak: json['tweak'] as String?,
+      signature: json['signature'] as String?,
+      signatureRecovery: json['signature_recovery'] as String?,
+    );
+
+Map<String, dynamic> _$SignatureToJson(Signature instance) => <String, dynamic>{
+      'bip32_path': instance.bip32Path,
+      'msg_hash': instance.msgHash,
+      'tweak': instance.tweak,
+      'signature': instance.signature,
+      'signature_recovery': instance.signatureRecovery,
     };

@@ -1,7 +1,5 @@
-
 import 'ucw_sdk_platform_interface.dart';
 import 'package:ucw_sdk/data.dart';
-
 
 Future<String?> getPlatformVersion() {
   return UcwSdkPlatform.instance.getPlatformVersion();
@@ -316,11 +314,11 @@ class UCW extends UCWPublic {
 
 
 class UCWRecoverKey {
- final String tssKeyShareGroupID;
- UCWRecoverKey({required this.tssKeyShareGroupID});
+  final String tssKeyShareGroupID;
 
+  UCWRecoverKey({required this.tssKeyShareGroupID});
 
- void dispose() {
+  void dispose() {
     _cleanRecoveryKeyShares();
   }
 

@@ -94,6 +94,22 @@ extension StatusExtension on Status {
   }
 }
 
+enum GroupType {
+  ecdsaTSS,
+  eddsaTSS,
+}
+
+extension GroupTypeExtension on GroupType {
+  int toInt() {
+    switch (this) {
+      case GroupType.ecdsaTSS:
+        return 1;
+      case GroupType.eddsaTSS:
+        return 2;
+    }
+  }
+}
+
 @JsonSerializable()
 class NodeResult {
   @JsonKey(name: 'tss_node_id')
@@ -207,10 +223,14 @@ class SDKInfo {
 
 @JsonSerializable()
 class GroupResult {
-  @JsonKey(name: 'data')
+  @JsonKey(name: 'data', fromJson: _tssKeyShareGroupListFromUntypedJson)
   final List<TSSKeyShareGroup>? data;
 
   GroupResult({this.data});
+
+  static List<TSSKeyShareGroup> _tssKeyShareGroupListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => TSSKeyShareGroup.fromUntypedJson(e)).toList();
+  }
 
   factory GroupResult.fromJson(Map<String, dynamic> json) =>
       _$GroupResultFromJson(json);
@@ -229,9 +249,9 @@ class TSSKeyShareGroup {
   // @JsonKey(name: 'protocol_type')
   // final String protocolType;
   @JsonKey(name: 'created_timestamp')
-  final String createdTimestamp;
-  // @JsonKey(name: 'type')
-  // final GroupType type;
+  final int createdTimestamp;
+  @JsonKey(name: 'type')
+  final GroupType type;
   @JsonKey(name: 'root_extended_public_key')
   final String rootPubKey;
   @JsonKey(name: 'chaincode')
@@ -240,9 +260,9 @@ class TSSKeyShareGroup {
   final String curve;
   @JsonKey(name: 'threshold')
   final int threshold;
-  // @JsonKey(name: 'participants',
-  //   fromJson: _sharePublicDataListFromUntypedJson)
-  // final List<SharePublicData>? participants;
+  @JsonKey(name: 'participants',
+    fromJson: _sharePublicDataListFromUntypedJson)
+  final List<SharePublicData>? participants;
 
   TSSKeyShareGroup({
     required this.tssKeyShareGroupID,
@@ -250,25 +270,49 @@ class TSSKeyShareGroup {
     // required this.protocolGroupID,
     // required this.protocolType,
     required this.createdTimestamp,
-    // required this.type,
+    required this.type,
     required this.rootPubKey,
     required this.chainCode,
     required this.curve,
     required this.threshold,
-    // this.participants,
+    this.participants,
   });
 
-  // static List<SharePublicData> _sharePublicDataListFromUntypedJson(List<dynamic>? json) {
-  //   return (json ?? []).map((e) => SharePublicData.fromUntypedJson(e)).toList();
-  // }
+  static List<SharePublicData> _sharePublicDataListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => SharePublicData.fromUntypedJson(e)).toList();
+  }
 
-  // factory TSSKeyShareGroup.fromUntypedJson(Map<dynamic, dynamic> json) =>
-  //     _$GroupPublicInfoFromJson(Map<String, dynamic>.from(json));
+  factory TSSKeyShareGroup.fromUntypedJson(Map<dynamic, dynamic> json) =>
+      _$TSSKeyShareGroupFromJson(Map<String, dynamic>.from(json));
 
   factory TSSKeyShareGroup.fromJson(Map<String, dynamic> json) =>
       _$TSSKeyShareGroupFromJson(json);
 
   Map<String, dynamic> toJson() => _$TSSKeyShareGroupToJson(this);
+}
+
+@JsonSerializable()
+class SharePublicData {
+  @JsonKey(name: 'node_id')
+  final String tssNodeID;
+  @JsonKey(name: 'share_id')
+  final String shareID;
+  @JsonKey(name: 'share_public_key')
+  final String sharePubKey;
+
+  SharePublicData({
+    required this.tssNodeID,
+    required this.shareID,
+    required this.sharePubKey,
+  });
+
+  factory SharePublicData.fromUntypedJson(Map<dynamic, dynamic> json) =>
+      _$SharePublicDataFromJson(Map<String, dynamic>.from(json));
+
+  factory SharePublicData.fromJson(Map<String, dynamic> json) =>
+      _$SharePublicDataFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SharePublicDataToJson(this);
 }
 
 @JsonSerializable()
@@ -297,7 +341,7 @@ class TSSRequest {
   
   // todo
 
-  @JsonKey(name: 'results')
+  @JsonKey(name: 'results', fromJson: _tssKeyShareGroupListFromUntypedJson)
   final List<TSSKeyShareGroup>? results;
   @JsonKey(name: 'failed_reasons')
   final List<String>? failedReasons;
@@ -309,6 +353,10 @@ class TSSRequest {
     this.results,
     this.failedReasons,
   });
+
+  static List<TSSKeyShareGroup> _tssKeyShareGroupListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => TSSKeyShareGroup.fromUntypedJson(e)).toList();
+  }
 
   factory TSSRequest.fromUntypedJson(Map<dynamic, dynamic> json) =>
       _$TSSRequestFromJson(Map<String, dynamic>.from(json));
@@ -322,10 +370,14 @@ class TSSRequest {
 
 @JsonSerializable()
 class TransactionResult {
-  @JsonKey(name: 'data')
+  @JsonKey(name: 'data', fromJson: _transactionListFromUntypedJson)
   final List<Transaction>? data;
 
   TransactionResult({this.data});
+
+  static List<Transaction> _transactionListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => Transaction.fromUntypedJson(e)).toList();
+  }
 
   factory TransactionResult.fromJson(Map<String, dynamic> json) =>
       _$TransactionResultFromJson(json);
@@ -339,20 +391,122 @@ class Transaction {
   final String transactionID;
   @JsonKey(name: 'status')
   final Status status;
- 
 
+  // todo
+  
+  @JsonKey(name: 'sign_details', fromJson: _signDetailListFromUntypedJson)
+  final List<SignDetail>? signDetails;
+  @JsonKey(name: 'results', fromJson: _signaturesListFromUntypedJson)
+  final List<Signatures>? results;
   @JsonKey(name: 'failed_reasons')
   final List<String>? failedReasons;
 
   Transaction({
     required this.transactionID,
     required this.status,
- 
+
+    this.signDetails,
+    this.results,
     this.failedReasons,
   });
+
+  static List<SignDetail> _signDetailListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => SignDetail.fromUntypedJson(e)).toList();
+  }
+
+  static List<Signatures> _signaturesListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => Signatures.fromUntypedJson(e)).toList();
+  }
+
+  factory Transaction.fromUntypedJson(Map<dynamic, dynamic> json) =>
+      _$TransactionFromJson(Map<String, dynamic>.from(json));
 
   factory Transaction.fromJson(Map<String, dynamic> json) =>
       _$TransactionFromJson(json);
 
   Map<String, dynamic> toJson() => _$TransactionToJson(this);
+}
+
+@JsonSerializable()
+class SignDetail {
+  @JsonKey(name: 'signature_type')
+  final int signatureType;
+  @JsonKey(name: 'tss_protocol')
+  final int tssProtocol;
+  @JsonKey(name: 'bip32_path_list')
+  final List<String>? bip32PathList;
+  @JsonKey(name: 'msg_hash_list')
+  final List<String>? msgHashList;
+  @JsonKey(name: 'tweak_list')
+  final List<String>? tweakList;
+
+  SignDetail({
+    required this.signatureType,
+    required this.tssProtocol,
+    this.bip32PathList,
+    this.msgHashList,
+    this.tweakList,
+  });
+
+  factory SignDetail.fromUntypedJson(Map<dynamic, dynamic> json) =>
+    _$SignDetailFromJson(Map<String, dynamic>.from(json));
+
+  factory SignDetail.fromJson(Map<String, dynamic> json) =>
+    _$SignDetailFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SignDetailToJson(this);
+}
+
+@JsonSerializable()
+class Signatures {
+  @JsonKey(name: 'signatures')
+  final List<Signature>? signatures;
+  @JsonKey(name: 'signature_type')
+  final int? signatureType;
+  @JsonKey(name: 'tss_protocol')
+  final int? tssProtocol;
+
+  Signatures({
+    this.signatures,
+    this.signatureType,
+    this.tssProtocol,
+  });
+
+  factory Signatures.fromUntypedJson(Map<dynamic, dynamic> json) =>
+      _$SignaturesFromJson(Map<String, dynamic>.from(json));
+
+  factory Signatures.fromJson(Map<String, dynamic> json) =>
+      _$SignaturesFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SignaturesToJson(this);
+}
+
+@JsonSerializable()
+class Signature {
+  @JsonKey(name: 'bip32_path')
+  final String bip32Path;
+  @JsonKey(name: 'msg_hash')
+  final String msgHash;
+  @JsonKey(name: 'tweak')
+  final String? tweak;
+  @JsonKey(name: 'signature')
+  final String? signature;
+  @JsonKey(name: 'signature_recovery')
+  final String? signatureRecovery;
+
+  Signature({
+    required this.bip32Path,
+    required this.msgHash,
+    this.tweak,
+    this.signature,
+    this.signatureRecovery,
+  });
+
+  factory Signature.fromUntypedJson(Map<dynamic, dynamic> json) =>
+      _$SignatureFromJson(Map<String, dynamic>.from(json));
+
+  factory Signature.fromJson(Map<String, dynamic> json) =>
+      _$SignatureFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SignatureToJson(this);
 }
