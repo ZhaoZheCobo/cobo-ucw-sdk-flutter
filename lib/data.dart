@@ -121,6 +121,91 @@ class HandlerResult {
 }
 
 @JsonSerializable()
+class SecretsResult {
+  @JsonKey(name: 'data')
+  final String data;
+
+  SecretsResult({required this.data});
+
+  factory SecretsResult.fromJson(Map<String, dynamic> json) =>
+      _$SecretsResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SecretsResultToJson(this);
+}
+
+class AddressInfo {
+  final String bip32Path;
+  final String publicKey;
+
+  AddressInfo({required this.bip32Path, required this.publicKey});
+}
+
+@JsonSerializable()
+class RecoverResult {
+  @JsonKey(name: 'data')
+  final List<PrivateKeyInfo>? data;
+
+  RecoverResult({this.data});
+
+  factory RecoverResult.fromJson(Map<String, dynamic> json) =>
+      _$RecoverResultFromJson(json);
+
+  Map<String, dynamic> toJson() => _$RecoverResultToJson(this);
+}
+
+@JsonSerializable()
+class PrivateKeyInfo {
+  @JsonKey(name: 'bip32_path')
+  final String bip32Path;
+  @JsonKey(name: 'extended_public_key')
+  final String publicKey;
+  @JsonKey(name: 'private_key')
+  final PrivateKey? privateKey;
+
+  PrivateKeyInfo({
+    required this.bip32Path,
+    required this.publicKey,
+    this.privateKey,
+  });
+
+  factory PrivateKeyInfo.fromJson(Map<String, dynamic> json) =>
+      _$PrivateKeyInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PrivateKeyInfoToJson(this);
+}
+
+@JsonSerializable()
+class PrivateKey {
+  @JsonKey(name: 'extended_private_key')
+  final String extPrivateKey;
+  @JsonKey(name: 'hex_private_key')
+  final String hexPrivateKey;
+
+  PrivateKey({
+    required this.extPrivateKey,
+    required this.hexPrivateKey,
+  });
+
+  factory PrivateKey.fromJson(Map<String, dynamic> json) =>
+      _$PrivateKeyFromJson(json);
+
+  Map<String, dynamic> toJson() => _$PrivateKeyToJson(this);
+}
+
+@JsonSerializable()
+class SDKInfo {
+  @JsonKey(name: 'version')
+  final String version;
+
+  SDKInfo({required this.version});
+
+  factory SDKInfo.fromJson(Map<String, dynamic> json) =>
+      _$SDKInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$SDKInfoToJson(this);
+}
+
+@JsonSerializable()
 class GroupResult {
   @JsonKey(name: 'data')
   final List<TSSKeyShareGroup>? data;

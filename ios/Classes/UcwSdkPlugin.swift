@@ -343,7 +343,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
   }
 
   func recoverPrivateKeys(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
-    guard let handler = arguments["handler"] as? String,
+    guard let tssKeyShareGroupID = arguments["tssKeyShareGroupID"] as? String,
       let jsonAddressInfos = arguments["jsonAddressInfos"] as? String else {
       flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
       return

@@ -278,7 +278,121 @@ class UCW extends UCWPublic {
     }
   }
 
+  Future<String> exportSecrets(String exportPassphrase) async {
+    try {
+      final arguments = {
+        'handler': handler,
+        'exportPassphrase': exportPassphrase,
+      };
+      final result = await _call('exportSecrets', arguments);
+      if (result == null) {
+          throw Exception('Received null result');
+      }
+      final secretsResult = SecretsResult.fromJson(Map<String, dynamic>.from(result));
+      return secretsResult.data;
+    } catch (e) {
+      throw Exception('Failed to exportSecrets: $e');
+    }
+  }
 
+  Future<String> exportRecoveryKeyShares(List<String> tssKeyShareGroupIDs, String exportPassphrase) async {
+    try {
+      final arguments = {
+        'handler': handler,
+        'tssKeyShareGroupIDs': tssKeyShareGroupIDs,
+        'exportPassphrase': exportPassphrase,
+      };
+      final result = await _call('exportRecoveryKeyShares', arguments);
+      if (result == null) {
+        throw Exception('Received null result');
+      }
+      final secretsResult = SecretsResult.fromJson(Map<String, dynamic>.from(result));
+      return secretsResult.data;
+    } catch (e) {
+      throw Exception('Failed to exportRecoveryKeyShares: $e');
+    }
+  }
+}
+
+
+class UCWRecoverKey {
+ final String tssKeyShareGroupID;
+ UCWRecoverKey({required this.tssKeyShareGroupID});
+
+
+ void dispose() {
+    _cleanRecoveryKeyShares();
+  }
+
+ Future<void> _cleanRecoveryKeyShares() async {
+    try {
+      await _call('cleanRecoveryKeyShares');
+    } catch (e) {
+      throw Exception('Failed to cleanRecoveryKeyShares: $e');
+    }
+  }
+
+  Future<void> importRecoveryKeyShare(String jsonRecoverySecrets, String exportPassphrase) async {
+    try {
+      final arguments = {
+        'tssKeyShareGroupID': tssKeyShareGroupID,
+        'jsonRecoverySecrets': jsonRecoverySecrets,
+        'exportPassphrase': exportPassphrase,
+      };
+      await _call('importRecoveryKeyShare', arguments);
+    } catch (e) {
+      throw Exception('Failed to importRecoveryKeyShare: $e');
+    }
+  }
+
+  Future<List<PrivateKeyInfo>> recoverPrivateKeys(List<AddressInfo> addressInfos) async {
+    try {
+      final arguments = {
+        'tssKeyShareGroupID': tssKeyShareGroupID,
+        'jsonAddressInfos': addressInfos,
+      };
+      final result = await _call('recoverPrivateKeys', arguments);
+      if (result == null) {
+        throw Exception('Received null result');
+      }
+      final recoverResult = RecoverResult.fromJson(Map<String, dynamic>.from(result));
+      return recoverResult.data ?? [];
+    } catch (e) {
+      throw Exception('Failed to recoverPrivateKeyss: $e');
+    }
+  }
+}
+
+Future<String> importSecrets(String jsonRecoverySecrets, String exportPassphrase, String newSecretsFile, String newPassphrase) async {
+  try {
+    final Map<String, dynamic> arguments = {
+      'jsonRecoverySecrets': jsonRecoverySecrets,
+      'exportPassphrase': exportPassphrase,
+      'newSecretsFile': newSecretsFile,
+      'newPassphrase': newPassphrase,
+    };
+    final result = await _call('importSecrets', arguments);
+    if (result == null) {
+      throw Exception('Received null result');
+    }
+    final nodeResult = NodeResult.fromJson(Map<String, dynamic>.from(result));
+    return nodeResult.tssNodeID;
+  } catch (e) {
+    throw Exception('Failed to importSecrets: $e');
+  }
+}
+
+Future<SDKInfo> getSDKInfo() async {
+  try {
+    final result = await _call('getSDKInfo');
+    if (result == null) {
+      throw Exception('Received null result');
+    }
+    final sdkInfoResult = SDKInfo.fromJson(Map<String, dynamic>.from(result));
+    return sdkInfoResult;
+  } catch (e) {
+    throw Exception('Failed to getSDKInfo: $e');
+  }
 }
 
 Future<void> setLogger() async {

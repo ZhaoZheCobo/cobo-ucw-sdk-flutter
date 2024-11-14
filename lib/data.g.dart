@@ -25,6 +25,63 @@ Map<String, dynamic> _$HandlerResultToJson(HandlerResult instance) =>
       'handler': instance.handler,
     };
 
+SecretsResult _$SecretsResultFromJson(Map<String, dynamic> json) =>
+    SecretsResult(
+      data: json['data'] as String,
+    );
+
+Map<String, dynamic> _$SecretsResultToJson(SecretsResult instance) =>
+    <String, dynamic>{
+      'data': instance.data,
+    };
+
+RecoverResult _$RecoverResultFromJson(Map<String, dynamic> json) =>
+    RecoverResult(
+      data: (json['data'] as List<dynamic>?)
+          ?.map((e) => PrivateKeyInfo.fromJson(e as Map<String, dynamic>))
+          .toList(),
+    );
+
+Map<String, dynamic> _$RecoverResultToJson(RecoverResult instance) =>
+    <String, dynamic>{
+      'data': instance.data,
+    };
+
+PrivateKeyInfo _$PrivateKeyInfoFromJson(Map<String, dynamic> json) =>
+    PrivateKeyInfo(
+      bip32Path: json['bip32_path'] as String,
+      publicKey: json['extended_public_key'] as String,
+      privateKey: json['private_key'] == null
+          ? null
+          : PrivateKey.fromJson(json['private_key'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$PrivateKeyInfoToJson(PrivateKeyInfo instance) =>
+    <String, dynamic>{
+      'bip32_path': instance.bip32Path,
+      'extended_public_key': instance.publicKey,
+      'private_key': instance.privateKey,
+    };
+
+PrivateKey _$PrivateKeyFromJson(Map<String, dynamic> json) => PrivateKey(
+      extPrivateKey: json['extended_private_key'] as String,
+      hexPrivateKey: json['hex_private_key'] as String,
+    );
+
+Map<String, dynamic> _$PrivateKeyToJson(PrivateKey instance) =>
+    <String, dynamic>{
+      'extended_private_key': instance.extPrivateKey,
+      'hex_private_key': instance.hexPrivateKey,
+    };
+
+SDKInfo _$SDKInfoFromJson(Map<String, dynamic> json) => SDKInfo(
+      version: json['version'] as String,
+    );
+
+Map<String, dynamic> _$SDKInfoToJson(SDKInfo instance) => <String, dynamic>{
+      'version': instance.version,
+    };
+
 GroupResult _$GroupResultFromJson(Map<String, dynamic> json) => GroupResult(
       data: (json['data'] as List<dynamic>?)
           ?.map((e) => TSSKeyShareGroup.fromJson(e as Map<String, dynamic>))
