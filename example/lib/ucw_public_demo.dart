@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-// import 'package:ucw_sdk/type.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
 
 class UCWPublicDemo extends StatefulWidget {
@@ -63,32 +62,38 @@ class _UCWPublicDemoState extends State<UCWPublicDemo> {
   }
 }
 
-String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
+// String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
+String secretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4.db';//
 late UCWPublic instanceUCWPublic;
 
 class DoUCWPublic {
 
   Future<String> doMethods() async {
     String resultStr = '';
-    resultStr += await doOpenPublic();
+    resultStr += await doInit();
     resultStr += await doGetTSSNodeID();
     resultStr += await doGetTSSKeyShareGroups();
     resultStr += await doListTSSKeyShareGroups();
-    instanceUCWPublic.dispose();
+    await doDispose();
     return resultStr;
   }
 
-  Future<String> doOpenPublic() async {
+  Future<String> doInit() async {
     String resultStr = '';
     try {
-      resultStr += 'Do openPublic\n';
+      resultStr += 'Do init\n';
       instanceUCWPublic = UCWPublic(secretsFile: secretsFile); 
       await instanceUCWPublic.init();
       return resultStr;
     } catch (e) {
-      resultStr += 'Failed to openPublic: $e\n';
+      resultStr += 'Failed to init: $e\n';
       return resultStr;
     }
+  }
+
+
+  Future<void> doDispose() async {
+    instanceUCWPublic.dispose();
   }
 
   Future<String> doGetTSSNodeID() async {
@@ -136,7 +141,4 @@ class DoUCWPublic {
     }
   }
 
-  Future<void> dispose() async {
-    instanceUCWPublic.dispose();
-  }
 }

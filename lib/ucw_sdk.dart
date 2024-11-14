@@ -278,4 +278,13 @@ class UCW extends UCWPublic {
     }
   }
 
+
+}
+
+Future<void> setLogger() async {
+  try {
+    await _call('setLogger');
+  } catch (e) {
+    throw Exception('Failed to setLogger: $e');
+  }
 }

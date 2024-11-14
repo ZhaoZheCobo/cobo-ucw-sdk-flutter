@@ -58,9 +58,8 @@ Map<String, dynamic> _$TSSKeyShareGroupToJson(TSSKeyShareGroup instance) =>
 
 TSSRequestResult _$TSSRequestResultFromJson(Map<String, dynamic> json) =>
     TSSRequestResult(
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => TSSRequest.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      data: TSSRequestResult._tssRequestListFromUntypedJson(
+          json['data'] as List?),
     );
 
 Map<String, dynamic> _$TSSRequestResultToJson(TSSRequestResult instance) =>

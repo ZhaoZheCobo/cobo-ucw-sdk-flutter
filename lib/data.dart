@@ -1,11 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'dart:ffi';
 
 part 'data.g.dart';
 
 class SDKConfig {
   final Env env;
-  final Int timeout;
+  final int timeout;
   final bool debug;
 
   SDKConfig({
@@ -59,25 +58,39 @@ enum ConnCode {
 }
 
 enum Status {
-  unknown(100),
-  scheduling(110),
-  initializing(120),
-  approving(130),
-  processing(140),
-  declined(160),
-  failed(170),
-  canceled(180),
-  completed(190);
+  unknown,
+  scheduling,
+  initializing,
+  approving,
+  processing,
+  declined,
+  failed,
+  canceled,
+  completed,
+}
 
-  final int value;
-
-  const Status(this.value);
-
-  static Status fromValue(int value) {
-    return Status.values.firstWhere(
-      (e) => e.value == value,
-      orElse: () => Status.unknown,
-    );
+extension StatusExtension on Status {
+  int toInt() {
+    switch (this) {
+      case Status.unknown:
+        return 100;
+      case Status.scheduling:
+        return 110;
+      case Status.initializing:
+        return 120;
+      case Status.approving:
+        return 130;
+      case Status.processing:
+        return 140;
+      case Status.declined:
+        return 160;
+      case Status.failed:
+        return 170;
+      case Status.canceled:
+        return 180;
+      case Status.completed:
+        return 190;
+    }
   }
 }
 
@@ -175,10 +188,14 @@ class TSSKeyShareGroup {
 
 @JsonSerializable()
 class TSSRequestResult {
-  @JsonKey(name: 'data')
+  @JsonKey(name: 'data', fromJson: _tssRequestListFromUntypedJson)
   final List<TSSRequest>? data;
  
   TSSRequestResult({this.data});
+
+  static List<TSSRequest> _tssRequestListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => TSSRequest.fromUntypedJson(e)).toList();
+  }
 
   factory TSSRequestResult.fromJson(Map<String, dynamic> json) =>
       _$TSSRequestResultFromJson(json);
@@ -207,6 +224,9 @@ class TSSRequest {
     this.results,
     this.failedReasons,
   });
+
+  factory TSSRequest.fromUntypedJson(Map<dynamic, dynamic> json) =>
+      _$TSSRequestFromJson(Map<String, dynamic>.from(json));
 
   factory TSSRequest.fromJson(Map<String, dynamic> json) {
     return _$TSSRequestFromJson(json);

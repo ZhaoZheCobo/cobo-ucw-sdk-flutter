@@ -15,7 +15,7 @@ enum SDKErrorCode: Int32 {
 
 class TssLogger: NSObject, TssLoggerProtocol {
     private let flutterResult: FlutterResult
-
+    
     init(flutterResult: @escaping FlutterResult) {
         self.flutterResult = flutterResult
     }
