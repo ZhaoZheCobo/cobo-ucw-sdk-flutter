@@ -13,19 +13,6 @@ enum SDKErrorCode: Int32 {
     }
 }
 
-class TssLogger: NSObject, TssLoggerProtocol {
-    private let flutterResult: FlutterResult
-    
-    init(flutterResult: @escaping FlutterResult) {
-        self.flutterResult = flutterResult
-    }
-
-    func log(_ level: String?, message: String?) {
-        // TODO
-        flutterResult(nil)
-    }
-}
-
 class TssCallback: NSObject, TssCallbackProtocol {
     private let flutterResult: FlutterResult
 
@@ -76,3 +63,17 @@ class TssCallbackWithData: NSObject, TssCallbackWithDataProtocol {
         flutterResult(result)
     }
 }
+
+class TssLogger: NSObject, TssLoggerProtocol {
+    private let flutterResult: FlutterResult
+    
+    init(flutterResult: @escaping FlutterResult) {
+        self.flutterResult = flutterResult
+    }
+
+    func log(_ level: String?, message: String?) {
+        // TODO
+        flutterResult(nil)
+    }
+}
+
