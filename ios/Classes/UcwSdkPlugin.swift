@@ -7,6 +7,11 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     let channel = FlutterMethodChannel(name: "ucw_sdk", binaryMessenger: registrar.messenger())
     let instance = UcwSdkPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
+
+    let logInstance = TssLogger()
+    let eventChannel = FlutterEventChannel(name: "ucw_sdk/logs", binaryMessenger: registrar.messenger())
+    eventChannel.setStreamHandler(logInstance)
+    TssSetLogger(logInstance)
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -59,8 +64,6 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
         importSecrets(arguments: arguments, flutterResult: result)
     case "getSDKInfo":
         getSDKInfo(flutterResult: result)
-    case "setLogger":
-        setLogger(flutterResult: result)
     default:
       result(FlutterMethodNotImplemented)
     }
@@ -348,7 +351,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
       flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
       return
     }
-    self._handleTssResultWithData(tssResult: TssRecoverPrivateKeys(handler, jsonAddressInfos), flutterResult: flutterResult)
+    self._handleTssResultWithData(tssResult: TssRecoverPrivateKeys(tssKeyShareGroupID, jsonAddressInfos), flutterResult: flutterResult)
   }
 
   func cleanRecoveryKeyShares() {
@@ -370,10 +373,6 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
   // others
   func getSDKInfo(flutterResult: @escaping FlutterResult) {
     self._handleTssResultWithData(tssResult: TssGetSDKInfo(), flutterResult: flutterResult)
-  }
-
-  func setLogger(flutterResult: @escaping FlutterResult) {
-    TssSetLogger(TssLogger(flutterResult: flutterResult))
   }
 
   // internal

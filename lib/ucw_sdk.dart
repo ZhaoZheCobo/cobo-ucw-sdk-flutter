@@ -1,5 +1,6 @@
 import 'ucw_sdk_platform_interface.dart';
 import 'package:ucw_sdk/data.dart';
+import 'package:ucw_sdk/ucw_sdk_event_channel.dart';
 
 Future<String?> getPlatformVersion() {
   return UcwSdkPlatform.instance.getPlatformVersion();
@@ -112,6 +113,7 @@ class UCW extends UCWPublic {
   SDKConfig config;
   ConnCode? connCode;
   String? connMessage;
+  LogListener? logListener;
 
   UCW({
     required super.secretsFile,
@@ -122,6 +124,8 @@ class UCW extends UCWPublic {
     connCode = ConnCode.unknown;
     connMessage = null;
     await _open(passphrase);
+    logListener = LogListener();
+
   }
 
   @override

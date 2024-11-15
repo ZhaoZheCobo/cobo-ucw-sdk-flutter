@@ -64,16 +64,28 @@ class TssCallbackWithData: NSObject, TssCallbackWithDataProtocol {
     }
 }
 
-class TssLogger: NSObject, TssLoggerProtocol {
-    private let flutterResult: FlutterResult
-    
-    init(flutterResult: @escaping FlutterResult) {
-        self.flutterResult = flutterResult
+class TssLogger: NSObject, TssLoggerProtocol, FlutterStreamHandler {
+    private var eventSink: FlutterEventSink?
+
+    func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        self.eventSink = events
+        return nil
+    }
+
+    func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        self.eventSink = nil
+        return nil
     }
 
     func log(_ level: String?, message: String?) {
-        // TODO
-        flutterResult(nil)
+        guard let eventSink = eventSink else {
+            return
+        }
+        
+        let logData: [String: String] = [
+            "level": level ?? "Unknown",
+            "message": message ?? "No message"
+        ]
+        eventSink(logData)
     }
 }
-

@@ -12,6 +12,8 @@ class LogListener {
           final level = event['level'] ?? 'Unknown';
           final message = event['message'] ?? 'No message';
           _logCallback!(level.toString(), message.toString());
+
+          print('Log received: Level: $level, Message: $message');
         }
       },
       onError: (error) {
