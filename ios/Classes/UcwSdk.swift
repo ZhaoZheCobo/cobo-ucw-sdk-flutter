@@ -78,14 +78,17 @@ class TssLogger: NSObject, TssLoggerProtocol, FlutterStreamHandler {
     }
 
     func log(_ level: String?, message: String?) {
-        guard let eventSink = eventSink else {
-            return
-        }
-        
+        print("[iOS] TSS SDK log: [level]: \(level) [message]:\(message)")        
         let logData: [String: String] = [
             "level": level ?? "Unknown",
             "message": message ?? "No message"
         ]
-        eventSink(logData)
+        DispatchQueue.main.async {
+            if let sink = self.eventSink {
+                sink(logData)
+            } else {
+                print("[iOS] eventSink is nil, cannot send log")
+            }
+        }
     }
 }

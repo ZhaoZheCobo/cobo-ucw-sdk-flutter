@@ -5,15 +5,16 @@ class LogListener {
 
   Function(String level, String message)? _logCallback;
 
-  LogListener() {
+ LogListener() {
     _logEventChannel.receiveBroadcastStream().listen(
       (event) {
-        if (_logCallback != null && event is Map) {
+        if (event is Map) {
           final level = event['level'] ?? 'Unknown';
           final message = event['message'] ?? 'No message';
-          _logCallback!(level.toString(), message.toString());
-
-          print('Log received: Level: $level, Message: $message');
+          print('Log: [Level] $level, [Message] $message');
+          if (_logCallback != null) {
+            _logCallback!(level.toString(), message.toString());
+          }
         }
       },
       onError: (error) {
