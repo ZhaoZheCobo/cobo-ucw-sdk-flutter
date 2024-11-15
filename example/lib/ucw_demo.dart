@@ -115,7 +115,9 @@ class DoUCW {
 
       final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
       instanceUCW = UCW(secretsFile: secretsFile, config: sdkConfig);   
-      await instanceUCW?.init1(passphrase);
+      await instanceUCW?.init1(passphrase, (connCode, message) {
+        print('UCW Demo -> Conn Code: $connCode, Message: $message');
+      });
       return resultStr;
     } catch (e) {
       resultStr += 'Failed to init: $e\n';

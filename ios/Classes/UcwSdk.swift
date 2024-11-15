@@ -78,7 +78,7 @@ class TssLogger: NSObject, TssLoggerProtocol, FlutterStreamHandler {
     }
 
     func log(_ level: String?, message: String?) {
-        print("[iOS] TSS SDK log: [level]: \(level) [message]:\(message)")        
+        print("[iOS] TSS SDK log: [level]: \(level ?? "Unknown") [message]:\(message ?? "No message")")        
         let logData: [String: String] = [
             "level": level ?? "Unknown",
             "message": message ?? "No message"
@@ -95,7 +95,7 @@ class TssLogger: NSObject, TssLoggerProtocol, FlutterStreamHandler {
 
 
 class TssConnection: NSObject, TssCallbackProtocol, FlutterStreamHandler {
-private var eventSink: FlutterEventSink?
+    private var eventSink: FlutterEventSink?
 
     func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         self.eventSink = events
@@ -107,12 +107,14 @@ private var eventSink: FlutterEventSink?
         return nil
     }
 
-    func callback(_ code: Int32, message: String) { {
-        print("[iOS] TSS SDK connect status: [code]: \(code) [message]:\(message)")        
-        let logData: [String: ] = [
+    func callback(_ code: Int32, message: String?) {
+        print("[iOS] TSS SDK connect status: [code]: \(code) [message]:\(message ?? "No message")")
+
+        let logData: [String: Any] = [
             "code": code,
-            "message": message,
+            "message": message ?? "No message"
         ]
+
         DispatchQueue.main.async {
             if let sink = self.eventSink {
                 sink(logData)

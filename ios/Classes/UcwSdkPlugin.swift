@@ -3,6 +3,8 @@ import UIKit
 import TSSSDK
 
 public class UcwSdkPlugin: NSObject, FlutterPlugin {
+  private var connInstance: TssConnection?
+
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "ucw_sdk", binaryMessenger: registrar.messenger())
     let instance = UcwSdkPlugin()
@@ -12,6 +14,11 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     let logChannel = FlutterEventChannel(name: "ucw_sdk/logs", binaryMessenger: registrar.messenger())
     logChannel.setStreamHandler(logInstance)
     TssSetLogger(logInstance)
+
+
+    instance.connInstance = TssConnection()
+    let connChannel = FlutterEventChannel(name: "ucw_sdk/connection", binaryMessenger: registrar.messenger())
+    connChannel.setStreamHandler(instance.connInstance)
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -91,10 +98,6 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     let config = TssSDKConfig()
     config.env = configEnv
     config.debug = configDebug
-
-    let connInstance = TssConnection()
-    let connChannel = FlutterEventChannel(name: "ucw_sdk/connection", binaryMessenger: registrar.messenger())
-    connChannel.setStreamHandler(connInstance)
 
     self._handleTssResultWithData(tssResult: TssOpen(config, secretsFile, passphrase, connInstance), flutterResult: flutterResult)
   }
