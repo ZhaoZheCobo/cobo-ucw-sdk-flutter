@@ -92,3 +92,33 @@ class TssLogger: NSObject, TssLoggerProtocol, FlutterStreamHandler {
         }
     }
 }
+
+
+class TssConnection: NSObject, TssCallbackProtocol, FlutterStreamHandler {
+private var eventSink: FlutterEventSink?
+
+    func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
+        self.eventSink = events
+        return nil
+    }
+
+    func onCancel(withArguments arguments: Any?) -> FlutterError? {
+        self.eventSink = nil
+        return nil
+    }
+
+    func callback(_ code: Int32, message: String) { {
+        print("[iOS] TSS SDK connect status: [code]: \(code) [message]:\(message)")        
+        let logData: [String: ] = [
+            "code": code,
+            "message": message,
+        ]
+        DispatchQueue.main.async {
+            if let sink = self.eventSink {
+                sink(logData)
+            } else {
+                print("[iOS] eventSink is nil, cannot send connect status")
+            }
+        }
+    }
+}

@@ -57,6 +57,13 @@ enum ConnCode {
   }
 }
 
+class ConnStatus {
+  ConnCode? connCode;
+  String? connMessage;
+
+  ConnStatus({this.connCode, this.connMessage});
+}
+
 enum Status {
   unknown,
   scheduling,

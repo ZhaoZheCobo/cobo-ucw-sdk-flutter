@@ -9,8 +9,8 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     registrar.addMethodCallDelegate(instance, channel: channel)
 
     let logInstance = TssLogger()
-    let eventChannel = FlutterEventChannel(name: "ucw_sdk/logs", binaryMessenger: registrar.messenger())
-    eventChannel.setStreamHandler(logInstance)
+    let logChannel = FlutterEventChannel(name: "ucw_sdk/logs", binaryMessenger: registrar.messenger())
+    logChannel.setStreamHandler(logInstance)
     TssSetLogger(logInstance)
   }
 
@@ -92,7 +92,11 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     config.env = configEnv
     config.debug = configDebug
 
-    self._handleTssResultWithData(tssResult: TssOpen(config, secretsFile, passphrase, TssCallback(flutterResult: flutterResult)), flutterResult: flutterResult)
+    let connInstance = TssConnection()
+    let connChannel = FlutterEventChannel(name: "ucw_sdk/connection", binaryMessenger: registrar.messenger())
+    connChannel.setStreamHandler(connInstance)
+
+    self._handleTssResultWithData(tssResult: TssOpen(config, secretsFile, passphrase, connInstance), flutterResult: flutterResult)
   }
 
   func openPublic(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {

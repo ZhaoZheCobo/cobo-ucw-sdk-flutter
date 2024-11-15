@@ -112,17 +112,21 @@ class UCWPublic {
 class UCW extends UCWPublic {
 
   SDKConfig config;
-  ConnCode? connCode;
-  String? connMessage;
+  ConnStatus? connStatus;
 
   UCW({
     required super.secretsFile,
     required this.config,
   });
 
-  Future<void> init1(String passphrase) async {
-    connCode = ConnCode.unknown;
-    connMessage = null;
+  Future<void> init1(String passphrase, Function(ConnCode connCode, String connMessage)? connCallback) async {
+    connStatus = ConnStatus(connCode: ConnCode.unknown, connMessage: null);
+    if (connCallback != null) {
+      connListener ??= ConnListener();
+      connListener?.registerConnCallback(connCallback);
+    } else {
+      logListener?.unregisterLogCallback();
+    }
     await _open(passphrase);
   }
 
@@ -151,11 +155,8 @@ class UCW extends UCWPublic {
     }
   }
 
-  Map<String, dynamic> getConnStatus() {
-      return {
-        'connCode': connCode,
-        'connMessage': connMessage,
-      };
+  ConnStatus? getConnStatus() {
+    return connStatus;
   }
 
   Future<List<TSSRequest>> listPendingTSSRequests() async {

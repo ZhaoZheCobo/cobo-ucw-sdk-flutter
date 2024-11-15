@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:ucw_sdk/data.dart';
 
 LogListener? logListener;
 
@@ -14,7 +15,7 @@ class LogListener {
         if (event is Map) {
           final level = event['level'] ?? 'Unknown';
           final message = event['message'] ?? 'No message';
-          print('Log: [Level] $level, [Message] $message');
+          print('Log Level: $level, Message: $message');
           if (_logCallback != null) {
             _logCallback!(level.toString(), message.toString());
           }
@@ -35,3 +36,39 @@ class LogListener {
   }
 }
 
+ConnListener? connListener;
+
+class ConnListener {
+  static const EventChannel _connEventChannel = EventChannel('ucw_sdk/connection');
+
+  Function(ConnCode connCode, String connMessage)? _connCallback;
+
+  ConnListener() {
+    print('Start ConnListener...');
+    _connEventChannel.receiveBroadcastStream().listen(
+      (event) {
+        if (event is Map) {
+          final connCode = event['code'] ?? ConnCode.unknown;
+          final connMessage = event['message'] ?? 'No message';
+
+          print('Connection Status: $connCode, Message: $connMessage');
+
+          if (_connCallback != null) {
+            _connCallback!(connCode, connMessage);
+          }
+        }
+      },
+      onError: (error) {
+        print('Error receiving connection status: $error');
+      },
+    );
+  }
+
+  void registerConnCallback(Function(ConnCode connCode, String connMessage) callback) {
+    _connCallback = callback;
+  }
+
+  void unregisterConnCallback() {
+    _connCallback = null;
+  }
+}
