@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
-import 'package:ucw_sdk/ucw_sdk_event_channel.dart';
 import 'package:ucw_sdk/data.dart';
 
 class UCWDemo extends StatefulWidget {
@@ -21,7 +20,7 @@ class _UCWDemoState extends State<UCWDemo> {
   }
 
   Future<void> _executeMethods() async {
-    final doUCW = DoUCW();
+        final doUCW = DoUCW(secretsFile);
     String result = await doUCW.doMethods();
     setState(() {
       _displayController.text = result;
@@ -68,17 +67,25 @@ class _UCWDemoState extends State<UCWDemo> {
 String secretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4.db';
 String passphrase = '1234567890123456';
 UCW? instanceUCW;
-LogListener? logListener;
 
 class DoUCW {
 
   Future<String> doMethods() async {
     String resultStr = '';
     //await setLogger();
+    print('start setLogger');
+    await setLogger((level, message) {
+      print('UCW Demo -> Level: $level, Message: $message');
+    });
+    print('start setLogger');
     resultStr += await doInitializeSecrets();
+    print('start doInitializeSecrets');
     resultStr += await doInit();
+    print('start doInit');
     resultStr += await doGetTSSRequests();
+    print('start doGetTSSRequests');
     resultStr += await doListPendingTSSRequests();
+    print('start doListPendingTSSRequests');
     //sleep(const Duration(seconds: 10));
     //await doDispose();
     return resultStr;
@@ -98,7 +105,6 @@ class DoUCW {
   }
 
   Future<String> doInit() async {
-    logListener = LogListener();
     String resultStr = '';
     try {
       resultStr += 'Do init\n';

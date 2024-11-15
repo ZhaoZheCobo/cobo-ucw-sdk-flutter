@@ -1,3 +1,4 @@
+import 'package:ucw_sdk/ucw_sdk_event_channel.dart';
 import 'ucw_sdk_platform_interface.dart';
 import 'package:ucw_sdk/data.dart';
 
@@ -394,10 +395,11 @@ Future<SDKInfo> getSDKInfo() async {
   }
 }
 
-Future<void> setLogger() async {
-  try {
-    await _call('setLogger');
-  } catch (e) {
-    throw Exception('Failed to setLogger: $e');
+Future<void> setLogger(Function(String level, String message)? logCallback) async {
+  if (logCallback != null) {
+    logListener ??= LogListener();
+    logListener?.registerLogCallback(logCallback);
+  } else {
+    logListener?.unregisterLogCallback();
   }
 }

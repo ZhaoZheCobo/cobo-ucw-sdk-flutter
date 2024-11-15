@@ -95,12 +95,12 @@ Map<String, dynamic> _$GroupResultToJson(GroupResult instance) =>
 TSSKeyShareGroup _$TSSKeyShareGroupFromJson(Map<String, dynamic> json) =>
     TSSKeyShareGroup(
       tssKeyShareGroupID: json['id'] as String,
-      createdTimestamp: json['created_timestamp'] as int,
+      createdTimestamp: (json['created_timestamp'] as num).toInt(),
       type: $enumDecode(_$GroupTypeEnumMap, json['type']),
       rootPubKey: json['root_extended_public_key'] as String,
       chainCode: json['chaincode'] as String,
       curve: json['curve'] as String,
-      threshold: json['threshold'] as int,
+      threshold: (json['threshold'] as num).toInt(),
       participants: TSSKeyShareGroup._sharePublicDataListFromUntypedJson(
           json['participants'] as List?),
     );
@@ -210,8 +210,8 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     };
 
 SignDetail _$SignDetailFromJson(Map<String, dynamic> json) => SignDetail(
-      signatureType: json['signature_type'] as int,
-      tssProtocol: json['tss_protocol'] as int,
+      signatureType: (json['signature_type'] as num).toInt(),
+      tssProtocol: (json['tss_protocol'] as num).toInt(),
       bip32PathList: (json['bip32_path_list'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -236,8 +236,8 @@ Signatures _$SignaturesFromJson(Map<String, dynamic> json) => Signatures(
       signatures: (json['signatures'] as List<dynamic>?)
           ?.map((e) => Signature.fromJson(e as Map<String, dynamic>))
           .toList(),
-      signatureType: json['signature_type'] as int?,
-      tssProtocol: json['tss_protocol'] as int?,
+      signatureType: (json['signature_type'] as num?)?.toInt(),
+      tssProtocol: (json['tss_protocol'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$SignaturesToJson(Signatures instance) =>
