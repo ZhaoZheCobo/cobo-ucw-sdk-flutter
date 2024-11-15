@@ -48,8 +48,9 @@ class ConnListener {
     _connEventChannel.receiveBroadcastStream().listen(
       (event) {
         if (event is Map) {
-          final connCode = event['code'] ?? ConnCode.unknown;
-          final connMessage = event['message'] ?? 'No message';
+          final int codeValue = event['code'] ?? 0;
+          final ConnCode connCode = ConnCode.fromValue(codeValue);
+          final String connMessage = event['message'] ?? 'No message';
 
           print('Connection Status: $connCode, Message: $connMessage');
 
