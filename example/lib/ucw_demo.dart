@@ -20,7 +20,7 @@ class _UCWDemoState extends State<UCWDemo> {
   }
 
   Future<void> _executeMethods() async {
-        final doUCW = DoUCW(secretsFile);
+        final doUCW = DoUCW();
     String result = await doUCW.doMethods();
     setState(() {
       _displayController.text = result;
