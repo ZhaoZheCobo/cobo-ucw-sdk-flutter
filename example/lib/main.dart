@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
 import 'ucw_demo.dart';
 import 'ucw_public_demo.dart';
+import 'ucw_recovery_demo.dart';
+import 'ucw_others_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -87,6 +89,24 @@ class MainPage extends StatelessWidget {
                 );
               },
               child: const Text('UCW Public Demo'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UCWRecoveryDemo()),
+                );
+              },
+              child: const Text('UCW Recovery Demo'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UCWOthersDemo()),
+                );
+              },
+              child: const Text('UCW Others Demo'),
             ),
             const SizedBox(height: 20),
           ],
