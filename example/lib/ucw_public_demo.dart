@@ -113,10 +113,10 @@ class DoUCWPublic {
     String resultStr = '';
     try {
       resultStr += 'Do getTSSKeyShareGroups\n';
-      final groups = await instanceUCWPublic.getTSSKeyShareGroups(['mockID']);
+      final groups = await instanceUCWPublic.getTSSKeyShareGroups(['gjRIvhmnDfpcGrzjOABE']);
       resultStr += 'TSS Key Share Groups: ${groups.length}\n';
       for (var group in groups) {
-        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, Name: ${group.rootPubKey}\n';
+        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}, type: ${group.type}, \n';
       }
       return resultStr;
     } catch (e) {
@@ -132,7 +132,7 @@ class DoUCWPublic {
       final groups = await instanceUCWPublic.listTSSKeyShareGroups();
       resultStr += 'TSS Key Share Groups (list): ${groups.length}\n';
       for (var group in groups) {
-        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, Name: ${group.rootPubKey}\n';
+        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}\n';
       }
       return resultStr;
     } catch (e) {

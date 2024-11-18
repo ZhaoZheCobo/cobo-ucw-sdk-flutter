@@ -104,17 +104,28 @@ extension StatusExtension on Status {
 }
 
 enum GroupType {
-  ecdsaTSS,
-  eddsaTSS,
+  ECDSA,
+  EdDSA,
 }
 
 extension GroupTypeExtension on GroupType {
   int toInt() {
     switch (this) {
-      case GroupType.ecdsaTSS:
+      case GroupType.ECDSA:
         return 1;
-      case GroupType.eddsaTSS:
+      case GroupType.EdDSA:
         return 2;
+    }
+  }
+
+  static GroupType fromInt(int value) {
+    switch (value) {
+      case 1:
+        return GroupType.ECDSA;
+      case 2:
+        return GroupType.EdDSA;
+      default:
+        throw ArgumentError('`$value` is not one of the supported values: ECDSA, EdDSA');
     }
   }
 }
@@ -259,7 +270,7 @@ class TSSKeyShareGroup {
   // final String protocolType;
   @JsonKey(name: 'created_timestamp')
   final int createdTimestamp;
-  @JsonKey(name: 'type')
+  @JsonKey(name: 'type', fromJson: GroupTypeExtension.fromInt)
   final GroupType type;
   @JsonKey(name: 'root_extended_public_key')
   final String rootPubKey;

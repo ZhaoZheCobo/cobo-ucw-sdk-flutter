@@ -278,4 +278,49 @@ class DoUCW {
     return resultStr;
   }
 
+  Future<String> doGetTSSNodeID() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do getTSSNodeID\n';
+      final tssNodeID = await instanceUCW!.getTSSNodeID();
+      resultStr += 'TSS Node ID: $tssNodeID\n';
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to getTSSNodeID: $e\n';
+      return resultStr;
+    }
+  }
+
+  Future<String> doGetTSSKeyShareGroups() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do getTSSKeyShareGroups\n';
+      final groups = await instanceUCW!.getTSSKeyShareGroups(['gjRIvhmnDfpcGrzjOABE']);
+      resultStr += 'TSS Key Share Groups: ${groups.length}\n';
+      for (var group in groups) {
+        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}, type: ${group.type}, \n';
+      }
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to getTSSKeyShareGroups: $e\n';
+      return resultStr;
+    }
+  }
+
+  Future<String> doListTSSKeyShareGroups() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do listTSSKeyShareGroups\n';
+      final groups = await instanceUCW!.listTSSKeyShareGroups();
+      resultStr += 'TSS Key Share Groups (list): ${groups.length}\n';
+      for (var group in groups) {
+        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}\n';
+      }
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to listTSSKeyShareGroups: $e\n';
+      return resultStr;
+    }
+  }
+
 }

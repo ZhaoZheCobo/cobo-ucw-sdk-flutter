@@ -96,7 +96,7 @@ TSSKeyShareGroup _$TSSKeyShareGroupFromJson(Map<String, dynamic> json) =>
     TSSKeyShareGroup(
       tssKeyShareGroupID: json['id'] as String,
       createdTimestamp: (json['created_timestamp'] as num).toInt(),
-      type: $enumDecode(_$GroupTypeEnumMap, json['type']),
+      type: GroupTypeExtension.fromInt((json['type'] as num).toInt()),
       rootPubKey: json['root_extended_public_key'] as String,
       chainCode: json['chaincode'] as String,
       curve: json['curve'] as String,
@@ -118,8 +118,8 @@ Map<String, dynamic> _$TSSKeyShareGroupToJson(TSSKeyShareGroup instance) =>
     };
 
 const _$GroupTypeEnumMap = {
-  GroupType.ecdsaTSS: 'ecdsaTSS',
-  GroupType.eddsaTSS: 'eddsaTSS',
+  GroupType.ECDSA: 'ECDSA',
+  GroupType.EdDSA: 'EdDSA',
 };
 
 SharePublicData _$SharePublicDataFromJson(Map<String, dynamic> json) =>
