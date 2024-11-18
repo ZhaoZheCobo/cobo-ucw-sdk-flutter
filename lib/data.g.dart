@@ -233,9 +233,8 @@ Map<String, dynamic> _$SignDetailToJson(SignDetail instance) =>
     };
 
 Signatures _$SignaturesFromJson(Map<String, dynamic> json) => Signatures(
-      signatures: (json['signatures'] as List<dynamic>?)
-          ?.map((e) => Signature.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      signatures:
+          Signatures._signatureListFromUntypedJson(json['signatures'] as List?),
       signatureType: (json['signature_type'] as num?)?.toInt(),
       tssProtocol: (json['tss_protocol'] as num?)?.toInt(),
     );

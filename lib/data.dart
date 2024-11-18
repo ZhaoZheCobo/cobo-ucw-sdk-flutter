@@ -504,7 +504,7 @@ class SignDetail {
 
 @JsonSerializable()
 class Signatures {
-  @JsonKey(name: 'signatures')
+  @JsonKey(name: 'signatures', fromJson: _signatureListFromUntypedJson)
   final List<Signature>? signatures;
   @JsonKey(name: 'signature_type')
   final int? signatureType;
@@ -516,6 +516,10 @@ class Signatures {
     this.signatureType,
     this.tssProtocol,
   });
+
+  static List<Signature> _signatureListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => Signature.fromUntypedJson(e)).toList();
+  }
 
   factory Signatures.fromUntypedJson(Map<dynamic, dynamic> json) =>
       _$SignaturesFromJson(Map<String, dynamic>.from(json));

@@ -116,7 +116,10 @@ class DoUCWPublic {
       final groups = await instanceUCWPublic.getTSSKeyShareGroups(['gjRIvhmnDfpcGrzjOABE']);
       resultStr += 'TSS Key Share Groups: ${groups.length}\n';
       for (var group in groups) {
-        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}, type: ${group.type}, \n';
+        resultStr += 'Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}, type: ${group.type}\n';
+        for (var participant in group.participants!) {
+          resultStr += 'participant tssNodeID: ${participant.tssNodeID}, shareID: ${participant.shareID}, sharePubKey: ${participant.sharePubKey} \n';
+        }
       }
       return resultStr;
     } catch (e) {
