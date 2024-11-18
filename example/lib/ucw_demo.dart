@@ -77,15 +77,10 @@ class DoUCW {
     await setLogger((level, message) {
       print('UCW Demo -> Level: $level, Message: $message');
     });
-    print('start setLogger');
     resultStr += await doInitializeSecrets();
-    print('start doInitializeSecrets');
     resultStr += await doInit();
-    print('start doInit');
     resultStr += await doGetTSSRequests();
-    print('start doGetTSSRequests');
     resultStr += await doListPendingTSSRequests();
-    print('start doListPendingTSSRequests');
     //sleep(const Duration(seconds: 10));
     //await doDispose();
     return resultStr;

@@ -149,7 +149,7 @@ Map<String, dynamic> _$TSSRequestResultToJson(TSSRequestResult instance) =>
 
 TSSRequest _$TSSRequestFromJson(Map<String, dynamic> json) => TSSRequest(
       tssRequestID: json['tss_request_id'] as String,
-      status: $enumDecode(_$StatusEnumMap, json['status']),
+      status: StatusExtension.fromInt((json['status'] as num).toInt()),
       results: TSSRequest._tssKeyShareGroupListFromUntypedJson(
           json['results'] as List?),
       failedReasons: (json['failed_reasons'] as List<dynamic>?)
@@ -190,7 +190,7 @@ Map<String, dynamic> _$TransactionResultToJson(TransactionResult instance) =>
 
 Transaction _$TransactionFromJson(Map<String, dynamic> json) => Transaction(
       transactionID: json['transaction_id'] as String,
-      status: $enumDecode(_$StatusEnumMap, json['status']),
+      status: StatusExtension.fromInt((json['status'] as num).toInt()),
       signDetails: Transaction._signDetailListFromUntypedJson(
           json['sign_details'] as List?),
       results:

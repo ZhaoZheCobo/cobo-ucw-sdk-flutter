@@ -101,6 +101,31 @@ extension StatusExtension on Status {
         return 190;
     }
   }
+
+  static Status fromInt(int value) {
+    switch (value) {
+      case 100:
+        return Status.unknown;
+      case 110:
+        return Status.scheduling;
+      case 120:
+        return Status.initializing;
+      case 130:
+        return Status.approving;
+      case 140:
+        return Status.processing;
+      case 160:
+        return Status.declined;
+      case 170:
+        return Status.failed;
+      case 180:
+        return Status.canceled;
+      case 190:
+        return Status.completed;
+      default:
+        throw ArgumentError('`$value` is not a valid value');
+    }
+  }
 }
 
 enum GroupType {
@@ -125,7 +150,7 @@ extension GroupTypeExtension on GroupType {
       case 2:
         return GroupType.EdDSA;
       default:
-        throw ArgumentError('`$value` is not one of the supported values: ECDSA, EdDSA');
+        throw ArgumentError('`$value` is not a valid value');
     }
   }
 }
@@ -356,7 +381,7 @@ class TSSRequestResult {
 class TSSRequest {
   @JsonKey(name: 'tss_request_id')
   final String tssRequestID;
-  @JsonKey(name: 'status')
+  @JsonKey(name: 'status', fromJson: StatusExtension.fromInt)
   final Status status;
   
   // todo
@@ -409,7 +434,7 @@ class TransactionResult {
 class Transaction {
   @JsonKey(name: 'transaction_id')
   final String transactionID;
-  @JsonKey(name: 'status')
+  @JsonKey(name: 'status', fromJson: StatusExtension.fromInt)
   final Status status;
 
   // todo
