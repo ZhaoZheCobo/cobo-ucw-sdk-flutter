@@ -67,8 +67,21 @@ class DoUCWOthers {
 
   Future<String> doMethods() async {
     String resultStr = '';
-   
+    resultStr += await doGetSDKInfo();
     return resultStr;
   }
 
+  Future<String> doGetSDKInfo() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do getSDKInfo\n';
+      final sdkInfo =  await getSDKInfo();
+      var version = sdkInfo.version;
+      resultStr += 'SDK Info: $version\n';
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to doGetSDKInfo: $e\n';
+      return resultStr;
+    }
+  }
 }
