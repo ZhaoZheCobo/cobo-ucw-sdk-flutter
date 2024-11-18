@@ -14,7 +14,7 @@ class SDKConfig {
   });
 }
 
-enum Env { development, production, local}
+enum Env { development, production, sandbox, local}
 
 extension EnvExtension on Env {
   String get value {
@@ -23,6 +23,8 @@ extension EnvExtension on Env {
         return "development";
       case Env.production:
         return "production";
+      case Env.sandbox:
+        return "sandbox";
       case Env.local:
         return "local";
     }
