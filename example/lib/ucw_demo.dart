@@ -87,12 +87,16 @@ class DoUCW {
     //resultStr += await doApproveTSSRequests();
     //resultStr += await doRejectTSSRequests();
 
-    resultStr += await doGetTransactions();
-    resultStr += await doListPendingTransactions();
+    //resultStr += await doGetTransactions();
+    //resultStr += await doListPendingTransactions();
     //sleep(const Duration(seconds: 3));
     //resultStr += await doApproveTransactions();
     //resultStr += await doRejectTransactions();
 
+    resultStr += await doGetTSSNodeID();
+    resultStr += await doGetTSSKeyShareGroups();
+    resultStr += await doListTSSKeyShareGroups();
+    
     //await doDispose();
     return resultStr;
   }
