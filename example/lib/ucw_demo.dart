@@ -127,10 +127,11 @@ class DoUCW {
 
       final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
       instanceUCW = UCW(secretsFile: secretsFile, config: sdkConfig);   
-      await instanceUCW?.init1(passphrase, (connCode, message) async {
-        print('UCW Demo -> Conn Code: $connCode, Message: $message');
-        await doGetConnStatus(); 
-      });
+      // await instanceUCW?.init1(passphrase, (connCode, message) async {
+      //   print('UCW Demo -> Conn Code: $connCode, Message: $message');
+      //   await doGetConnStatus(); 
+      // });
+      await instanceUCW?.init1(passphrase, null);
       return resultStr;
     } catch (e) {
       resultStr += 'Failed to init: $e\n';
