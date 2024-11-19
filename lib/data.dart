@@ -211,10 +211,14 @@ class AddressInfo {
 
 @JsonSerializable()
 class RecoverResult {
-  @JsonKey(name: 'data')
+  @JsonKey(name: 'data', fromJson: _privateKeyInfoListFromUntypedJson)
   final List<PrivateKeyInfo>? data;
 
   RecoverResult({this.data});
+
+  static List<PrivateKeyInfo> _privateKeyInfoListFromUntypedJson(List<dynamic>? json) {
+    return (json ?? []).map((e) => PrivateKeyInfo.fromUntypedJson(e)).toList();
+  }
 
   factory RecoverResult.fromJson(Map<String, dynamic> json) =>
       _$RecoverResultFromJson(json);
@@ -228,7 +232,7 @@ class PrivateKeyInfo {
   final String bip32Path;
   @JsonKey(name: 'extended_public_key')
   final String publicKey;
-  @JsonKey(name: 'private_key')
+  @JsonKey(name: 'private_key', fromJson: _privateKeyFromUntypedJson)
   final PrivateKey? privateKey;
 
   PrivateKeyInfo({
@@ -236,6 +240,13 @@ class PrivateKeyInfo {
     required this.publicKey,
     this.privateKey,
   });
+
+  static PrivateKey _privateKeyFromUntypedJson(dynamic json) {
+    return PrivateKey.fromUntypedJson(json);
+  }
+
+  factory PrivateKeyInfo.fromUntypedJson(Map<dynamic, dynamic> json) =>
+      _$PrivateKeyInfoFromJson(Map<String, dynamic>.from(json));
 
   factory PrivateKeyInfo.fromJson(Map<String, dynamic> json) =>
       _$PrivateKeyInfoFromJson(json);
@@ -254,6 +265,9 @@ class PrivateKey {
     required this.extPrivateKey,
     required this.hexPrivateKey,
   });
+
+  factory PrivateKey.fromUntypedJson(Map<dynamic, dynamic> json) =>
+      _$PrivateKeyFromJson(Map<String, dynamic>.from(json));
 
   factory PrivateKey.fromJson(Map<String, dynamic> json) =>
       _$PrivateKeyFromJson(json);

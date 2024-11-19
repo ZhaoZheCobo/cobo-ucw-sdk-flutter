@@ -182,7 +182,10 @@ class DoUCWRecovery {
       resultStr += ('Recovered private keys: $resultStr\n');
 
       rKeys.forEach((keyInfo) {
-        resultStr += ('Private Key: ${keyInfo.privateKey}\n');
+        resultStr += ('bip32Path: ${keyInfo.bip32Path}\n');
+        resultStr += ('public Key: ${keyInfo.publicKey}\n');
+        resultStr += ('Private Key: ${keyInfo.privateKey?.extPrivateKey}\n');
+        resultStr += ('Private Key: ${keyInfo.privateKey?.hexPrivateKey}\n');
       });
       return resultStr;
 

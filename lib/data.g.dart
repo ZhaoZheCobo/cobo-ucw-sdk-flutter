@@ -48,9 +48,8 @@ Map<String, dynamic> _$AddressInfoToJson(AddressInfo instance) =>
 
 RecoverResult _$RecoverResultFromJson(Map<String, dynamic> json) =>
     RecoverResult(
-      data: (json['data'] as List<dynamic>?)
-          ?.map((e) => PrivateKeyInfo.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      data: RecoverResult._privateKeyInfoListFromUntypedJson(
+          json['data'] as List?),
     );
 
 Map<String, dynamic> _$RecoverResultToJson(RecoverResult instance) =>
@@ -62,9 +61,8 @@ PrivateKeyInfo _$PrivateKeyInfoFromJson(Map<String, dynamic> json) =>
     PrivateKeyInfo(
       bip32Path: json['bip32_path'] as String,
       publicKey: json['extended_public_key'] as String,
-      privateKey: json['private_key'] == null
-          ? null
-          : PrivateKey.fromJson(json['private_key'] as Map<String, dynamic>),
+      privateKey:
+          PrivateKeyInfo._privateKeyFromUntypedJson(json['private_key']),
     );
 
 Map<String, dynamic> _$PrivateKeyInfoToJson(PrivateKeyInfo instance) =>
