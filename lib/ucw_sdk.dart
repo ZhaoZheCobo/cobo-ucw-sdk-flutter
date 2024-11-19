@@ -128,11 +128,11 @@ class UCW extends UCWPublic {
     Function(ConnCode connCode, String connMessage)? connCallback,
   }) async {
     final instance = UCW(secretsFile: secretsFile, config: config);
-    await instance._initInternal(passphrase, connCallback);
+    await instance._init(passphrase, connCallback);
     return instance;
   }
 
-  Future<void> _initInternal(String passphrase, Function(ConnCode connCode, String connMessage)? connCallback) async {
+  Future<void> _init(String passphrase, Function(ConnCode connCode, String connMessage)? connCallback) async {
     connStatus = ConnStatus(connCode: ConnCode.unknown, connMessage: null);
     _connCallback = connCallback;
     connListener ??= ConnListener();
