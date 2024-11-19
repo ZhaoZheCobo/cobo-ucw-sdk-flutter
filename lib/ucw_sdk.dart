@@ -129,10 +129,10 @@ class UCW extends UCWPublic {
   }
 
   Future<void> _innerConnCallback(ConnCode connCode, String connMessage) async {
-    print('_innerConnCallback Status: $connCode, Message: $connMessage');
+    // print('_innerConnCallback Status: $connCode, Message: $connMessage');
     connStatus = ConnStatus(connCode: connCode, connMessage: connMessage);
     if (_connCallback != null) {
-      print('_connCallback Status: $connCode, Message: $connMessage');
+      // print('_connCallback Status: $connCode, Message: $connMessage');
       _connCallback!(connCode, connMessage);
     }
   }
