@@ -15,7 +15,7 @@ class LogListener {
         if (event is Map) {
           final level = event['level'] ?? 'Unknown';
           final message = event['message'] ?? 'No message';
-          print('Log Level: $level, Message: $message');
+          print('LogListener Level: $level, Message: $message');
           if (_logCallback != null) {
             _logCallback!(level.toString(), message.toString());
           }
@@ -52,7 +52,7 @@ class ConnListener {
           final ConnCode connCode = ConnCode.fromValue(codeValue);
           final String connMessage = event['message'] ?? 'No message';
 
-          print('Connection Status: $connCode, Message: $connMessage');
+          print('ConnListener Status: $connCode, Message: $connMessage');
 
           if (_connCallback != null) {
             _connCallback!(connCode, connMessage);

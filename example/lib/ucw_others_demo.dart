@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
+import 'package:ucw_sdk/data.dart';
 
 class UCWOthersDemo extends StatefulWidget {
   const UCWOthersDemo({super.key});
@@ -62,6 +63,10 @@ class _UCWOthersDemoState extends State<UCWOthersDemo> {
   }
 }
 
+//String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
+String secretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4.db';
+String passphrase = '1234567890123456';
+UCW? instanceUCW;
 
 class DoUCWOthers {
 
@@ -84,4 +89,27 @@ class DoUCWOthers {
       return resultStr;
     }
   }
+
+  Future<String> doInit() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do init\n';
+      if (instanceUCW != null) {
+        resultStr += 'InstanceUCW exists\n';       
+        return resultStr;
+      } 
+
+      final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
+      instanceUCW = UCW(secretsFile: secretsFile, config: sdkConfig);   
+      await instanceUCW?.init1(passphrase, (connCode, message) {
+        print('UCW Demo -> Conn Code: $connCode, Message: $message');
+      });
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to init: $e\n';
+      return resultStr;
+    }
+  }
+
+  
 }

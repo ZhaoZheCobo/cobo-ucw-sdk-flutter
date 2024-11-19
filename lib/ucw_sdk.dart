@@ -113,6 +113,7 @@ class UCW extends UCWPublic {
 
   SDKConfig config;
   ConnStatus? connStatus;
+  Function(ConnCode connCode, String connMessage)? _connCallback;
 
   UCW({
     required super.secretsFile,
@@ -121,13 +122,19 @@ class UCW extends UCWPublic {
 
   Future<void> init1(String passphrase, Function(ConnCode connCode, String connMessage)? connCallback) async {
     connStatus = ConnStatus(connCode: ConnCode.unknown, connMessage: null);
-    if (connCallback != null) {
-      connListener ??= ConnListener();
-      connListener?.registerConnCallback(connCallback);
-    } else {
-      logListener?.unregisterLogCallback();
-    }
+    _connCallback = connCallback;
+    connListener ??= ConnListener();
+    connListener?.registerConnCallback(_innerConnCallback);
     await _open(passphrase);
+  }
+
+  Future<void> _innerConnCallback(ConnCode connCode, String connMessage) async {
+    print('_innerConnCallback Status: $connCode, Message: $connMessage');
+    connStatus = ConnStatus(connCode: connCode, connMessage: connMessage);
+    if (_connCallback != null) {
+      print('_connCallback Status: $connCode, Message: $connMessage');
+      _connCallback!(connCode, connMessage);
+    }
   }
 
   @override

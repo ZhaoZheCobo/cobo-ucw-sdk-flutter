@@ -81,7 +81,7 @@ class DoUCW {
     });
     resultStr += await doInitializeSecrets();
     resultStr += await doInit();
-    //resultStr += await doGetTSSRequests();
+   //resultStr += await doGetTSSRequests();
     //resultStr += await doListPendingTSSRequests();
     //sleep(const Duration(seconds: 3));
     //resultStr += await doApproveTSSRequests();
@@ -96,7 +96,9 @@ class DoUCW {
     resultStr += await doGetTSSNodeID();
     resultStr += await doGetTSSKeyShareGroups();
     resultStr += await doListTSSKeyShareGroups();
-    
+    // sleep(const Duration(seconds: 10));
+    resultStr += await doGetConnStatus(); 
+   
     //await doDispose();
     return resultStr;
   }
@@ -125,8 +127,9 @@ class DoUCW {
 
       final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
       instanceUCW = UCW(secretsFile: secretsFile, config: sdkConfig);   
-      await instanceUCW?.init1(passphrase, (connCode, message) {
+      await instanceUCW?.init1(passphrase, (connCode, message) async {
         print('UCW Demo -> Conn Code: $connCode, Message: $message');
+        await doGetConnStatus(); 
       });
       return resultStr;
     } catch (e) {
@@ -137,6 +140,24 @@ class DoUCW {
 
   Future<void> doDispose() async {
     instanceUCW?.dispose();
+  }
+
+  Future<String> doGetConnStatus() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Do getConnStatus\n';
+      final connStatus = instanceUCW?.getConnStatus();
+      if (connStatus != null) {
+         print('doGetConnStatus -> Conn Code: ${connStatus.connCode}, ${connStatus.connMessage}');
+        resultStr += 'Connection Status: ${connStatus.connCode}, ${connStatus.connMessage}\n';
+      } else {
+        resultStr += 'Connection Status is null.\n';
+      }
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to getConnStatus: $e\n';
+      return resultStr;
+    }
   }
 
   Future<String> doListPendingTSSRequests() async {
