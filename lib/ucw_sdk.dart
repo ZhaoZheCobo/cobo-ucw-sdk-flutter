@@ -32,12 +32,13 @@ class UCWPublic {
 
   UCWPublic({required this.secretsFile});
 
-  Future<void> init() async {
-    await _openPublic();
+  static Future<UCWPublic> create({required String secretsFile}) async {
+    final instance = UCWPublic(secretsFile: secretsFile);
+    await instance._openPublic();
+    return instance;
   }
 
   void dispose() async {
-    print("UCWPublic deinitialization");
     await _close();
   }
 
@@ -120,7 +121,18 @@ class UCW extends UCWPublic {
     required this.config,
   });
 
-  Future<void> init1(String passphrase, Function(ConnCode connCode, String connMessage)? connCallback) async {
+  static Future<UCW> create({
+    required String secretsFile,
+    required SDKConfig config,
+    required String passphrase,
+    Function(ConnCode connCode, String connMessage)? connCallback,
+  }) async {
+    final instance = UCW(secretsFile: secretsFile, config: config);
+    await instance._initInternal(passphrase, connCallback);
+    return instance;
+  }
+
+  Future<void> _initInternal(String passphrase, Function(ConnCode connCode, String connMessage)? connCallback) async {
     connStatus = ConnStatus(connCode: ConnCode.unknown, connMessage: null);
     _connCallback = connCallback;
     connListener ??= ConnListener();
@@ -129,17 +141,18 @@ class UCW extends UCWPublic {
   }
 
   Future<void> _innerConnCallback(ConnCode connCode, String connMessage) async {
-    // print('_innerConnCallback Status: $connCode, Message: $connMessage');
     connStatus = ConnStatus(connCode: connCode, connMessage: connMessage);
     if (_connCallback != null) {
-      // print('_connCallback Status: $connCode, Message: $connMessage');
-      _connCallback!(connCode, connMessage);
+      try {
+        _connCallback!(connCode, connMessage);
+      } catch (e) {
+        throw Exception('Error in connection callback: $e');
+      }
     }
   }
 
   @override
   void dispose() async {
-    print("UCW deinitialization");
     await _close();
   }
 

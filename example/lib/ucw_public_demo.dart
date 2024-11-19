@@ -84,8 +84,7 @@ class DoUCWPublic {
     String resultStr = '';
     try {
       resultStr += 'Do init\n';
-      instanceUCWPublic = UCWPublic(secretsFile: secretsFile); 
-      await instanceUCWPublic.init();
+      instanceUCWPublic = await UCWPublic.create(secretsFile: secretsFile);
       return resultStr;
     } catch (e) {
       resultStr += 'Failed to init: $e\n';
