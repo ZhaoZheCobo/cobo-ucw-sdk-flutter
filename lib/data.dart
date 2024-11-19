@@ -194,11 +194,19 @@ class SecretsResult {
   Map<String, dynamic> toJson() => _$SecretsResultToJson(this);
 }
 
+@JsonSerializable()
 class AddressInfo {
+  @JsonKey(name: 'bip32_path')
   final String bip32Path;
-  final String publicKey;
+  @JsonKey(name: 'extended_public_key')
+  final String? publicKey;
 
-  AddressInfo({required this.bip32Path, required this.publicKey});
+  AddressInfo({required this.bip32Path, this.publicKey});
+
+  factory AddressInfo.fromJson(Map<String, dynamic> json) =>
+      _$AddressInfoFromJson(json);
+
+  Map<String, dynamic> toJson() => _$AddressInfoToJson(this);
 }
 
 @JsonSerializable()

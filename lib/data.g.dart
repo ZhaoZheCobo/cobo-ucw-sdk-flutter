@@ -35,6 +35,17 @@ Map<String, dynamic> _$SecretsResultToJson(SecretsResult instance) =>
       'data': instance.data,
     };
 
+AddressInfo _$AddressInfoFromJson(Map<String, dynamic> json) => AddressInfo(
+      bip32Path: json['bip32_path'] as String,
+      publicKey: json['extended_public_key'] as String?,
+    );
+
+Map<String, dynamic> _$AddressInfoToJson(AddressInfo instance) =>
+    <String, dynamic>{
+      'bip32_path': instance.bip32Path,
+      'extended_public_key': instance.publicKey,
+    };
+
 RecoverResult _$RecoverResultFromJson(Map<String, dynamic> json) =>
     RecoverResult(
       data: (json['data'] as List<dynamic>?)

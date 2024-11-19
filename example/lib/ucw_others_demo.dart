@@ -64,8 +64,11 @@ class _UCWOthersDemoState extends State<UCWOthersDemo> {
 }
 
 //String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
+//String newSecretsFile = '~/ucw_sdk_flutter_plugin/secrets1.db';
 String secretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4.db';
+String newSecretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4-1.db';
 String passphrase = '1234567890123456';
+String exportPassphrase = 'ABCDEFGHIJKLMNOP';
 UCW? instanceUCW;
 
 class DoUCWOthers {
@@ -73,6 +76,8 @@ class DoUCWOthers {
   Future<String> doMethods() async {
     String resultStr = '';
     resultStr += await doGetSDKInfo();
+    resultStr += await doInit();
+    resultStr += await doExportSecrets();
     return resultStr;
   }
 
@@ -111,5 +116,43 @@ class DoUCWOthers {
     }
   }
 
-  
+  Future<String> doExportSecrets() async {
+    String resultStr = '';
+    try {
+      resultStr += 'Starting export of secrets...\n';
+
+      final exportResult = await instanceUCW?.exportSecrets(exportPassphrase);
+
+      resultStr += 'Secrets exported successfully:\n';
+      print('$exportResult\n');
+
+      resultStr += await doImportSecrets(exportResult!, exportPassphrase, newSecretsFile, passphrase);
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to doExportSecrets: $e\n';
+      return resultStr;
+    }
+  }
+
+  Future<String> doImportSecrets(
+      String jsonRecoverySecrets,
+      String exportPassphrase,
+      String newSecretsFile,
+      String newPassphrase) async {
+    String resultStr = '';
+    try {
+      resultStr += 'Starting import of secrets...\n';
+
+      final importResult = await importSecrets(
+          jsonRecoverySecrets, exportPassphrase, newSecretsFile, newPassphrase);
+
+      resultStr += 'Secrets imported successfully:\n';
+      resultStr += 'Imported TSS Node ID: $importResult\n';
+      return resultStr;
+    } catch (e) {
+      resultStr += 'Failed to doImportSecrets: $e\n';
+      return resultStr;
+    }
+  }
+
 }

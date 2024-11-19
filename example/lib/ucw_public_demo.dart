@@ -64,6 +64,8 @@ class _UCWPublicDemoState extends State<UCWPublicDemo> {
 
 // String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
 String secretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4.db';//
+//String secretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4-1.db';
+
 late UCWPublic instanceUCWPublic;
 
 class DoUCWPublic {

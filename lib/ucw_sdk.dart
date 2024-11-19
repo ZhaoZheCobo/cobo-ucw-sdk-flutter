@@ -1,7 +1,7 @@
 import 'package:ucw_sdk/ucw_sdk_event_channel.dart';
 import 'ucw_sdk_platform_interface.dart';
 import 'package:ucw_sdk/data.dart';
-
+import 'dart:convert';
 
 Future<String?> getPlatformVersion() {
   return UcwSdkPlatform.instance.getPlatformVersion();
@@ -355,9 +355,10 @@ class UCWRecoverKey {
 
   Future<List<PrivateKeyInfo>> recoverPrivateKeys(List<AddressInfo> addressInfos) async {
     try {
+      String jsonAddressInfos = jsonEncode(addressInfos.map((e) => e.toJson()).toList());
       final arguments = {
         'tssKeyShareGroupID': tssKeyShareGroupID,
-        'jsonAddressInfos': addressInfos,
+        'jsonAddressInfos': jsonAddressInfos,
       };
       final result = await _call('recoverPrivateKeys', arguments);
       if (result == null) {
@@ -366,7 +367,7 @@ class UCWRecoverKey {
       final recoverResult = RecoverResult.fromJson(Map<String, dynamic>.from(result));
       return recoverResult.data ?? [];
     } catch (e) {
-      throw Exception('Failed to recoverPrivateKeyss: $e');
+      throw Exception('Failed to recoverPrivateKeys: $e');
     }
   }
 }
