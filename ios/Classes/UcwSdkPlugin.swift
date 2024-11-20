@@ -4,16 +4,17 @@ import TSSSDK
 
 public class UcwSdkPlugin: NSObject, FlutterPlugin {
   private var connInstance: TssConnection?
+  private var logInstance: TssLogger?
 
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "ucw_sdk", binaryMessenger: registrar.messenger())
     let instance = UcwSdkPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
 
-    let logInstance = TssLogger()
+    instance.logInstance = TssLogger()
     let logChannel = FlutterEventChannel(name: "ucw_sdk/logs", binaryMessenger: registrar.messenger())
-    logChannel.setStreamHandler(logInstance)
-    TssSetLogger(logInstance)
+    logChannel.setStreamHandler(instance.logInstance)
+    TssSetLogger(instance.logInstance)
 
 
     instance.connInstance = TssConnection()
