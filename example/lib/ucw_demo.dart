@@ -87,7 +87,7 @@ class DoUCW {
     //resultStr += await doApproveTSSRequests();
     //resultStr += await doRejectTSSRequests();
 
-    //resultStr += await doGetTransactions();
+    resultStr += await doGetTransactions();
     //resultStr += await doListPendingTransactions();
     //sleep(const Duration(seconds: 3));
     //resultStr += await doApproveTransactions();
