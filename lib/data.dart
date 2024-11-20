@@ -155,6 +155,80 @@ extension GroupTypeExtension on GroupType {
   }
 }
 
+enum SignatureType {
+  Unknown,
+  ECDSA,
+  EdDSA,
+  Schnorr,
+}
+
+extension SignatureTypeExtension on SignatureType {
+  int toInt() {
+    switch (this) {
+      case SignatureType.Unknown:
+        return 0;
+      case SignatureType.ECDSA:
+        return 1;
+      case SignatureType.EdDSA:
+        return 2;
+      case SignatureType.Schnorr:
+        return 3;
+    }
+  }
+
+  static SignatureType fromInt(int value) {
+    switch (value) {
+      case 0:
+        return SignatureType.Unknown;
+      case 1:
+        return SignatureType.ECDSA;
+      case 2:
+        return SignatureType.EdDSA;
+      case 3:
+        return SignatureType.Schnorr;
+      default:
+        throw ArgumentError('`$value` is not a valid value');
+    }
+  }
+}
+
+enum TssProtocol {
+  Default,
+  GG18,
+  Lindell,
+  EdDSATSS,
+}
+
+extension TssProtocolExtension on TssProtocol {
+  int toInt() {
+    switch (this) {
+      case TssProtocol.Default:
+        return 0;
+      case TssProtocol.GG18:
+        return 1;
+      case TssProtocol.Lindell:
+        return 2;
+      case TssProtocol.EdDSATSS:
+        return 3;
+    }
+  }
+
+  static TssProtocol fromInt(int value) {
+    switch (value) {
+      case 0:
+        return TssProtocol.Default;
+      case 1:
+        return TssProtocol.GG18;
+      case 2:
+        return TssProtocol.Lindell;
+      case 3:
+        return TssProtocol.EdDSATSS;
+      default:
+        throw ArgumentError('`$value` is not a valid TssProtocol value');
+    }
+  }
+}
+
 @JsonSerializable()
 class NodeResult {
   @JsonKey(name: 'tss_node_id')
@@ -496,10 +570,10 @@ class Transaction {
 
 @JsonSerializable()
 class SignDetail {
-  @JsonKey(name: 'signature_type')
-  final int signatureType;
-  @JsonKey(name: 'tss_protocol')
-  final int tssProtocol;
+  @JsonKey(name: 'signature_type', fromJson: SignatureTypeExtension.fromInt)
+  final SignatureType signatureType;
+  @JsonKey(name: 'tss_protocol', fromJson: TssProtocolExtension.fromInt)
+  final TssProtocol tssProtocol;
   @JsonKey(name: 'bip32_path_list')
   final List<String>? bip32PathList;
   @JsonKey(name: 'msg_hash_list')
@@ -528,10 +602,10 @@ class SignDetail {
 class Signatures {
   @JsonKey(name: 'signatures', fromJson: _signatureListFromUntypedJson)
   final List<Signature>? signatures;
-  @JsonKey(name: 'signature_type')
-  final int? signatureType;
-  @JsonKey(name: 'tss_protocol')
-  final int? tssProtocol;
+  @JsonKey(name: 'signature_type', fromJson: SignatureTypeExtension.fromInt)
+  final SignatureType? signatureType;
+  @JsonKey(name: 'tss_protocol', fromJson: TssProtocolExtension.fromInt)
+  final TssProtocol? tssProtocol;
 
   Signatures({
     this.signatures,
