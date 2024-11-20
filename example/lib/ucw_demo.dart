@@ -126,7 +126,7 @@ class DoUCW {
       } 
 
       final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
-      instanceUCW = UCW(secretsFile: secretsFile, config: sdkConfig, passphrase: passphrase, connCallback:
+      instanceUCW = await UCW.create(secretsFile: secretsFile, config: sdkConfig, passphrase: passphrase, connCallback:
       (connCode, message) async {
         print('UCW Demo -> Conn Code: $connCode, Message: $message');
         await doGetConnStatus(); 
