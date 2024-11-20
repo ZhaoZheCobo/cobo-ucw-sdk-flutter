@@ -176,7 +176,10 @@ extension SignatureTypeExtension on SignatureType {
     }
   }
 
-  static SignatureType fromInt(int value) {
+  static SignatureType fromInt(int? value) {
+    if (value == null) {
+      return SignatureType.Unknown;
+    }
     switch (value) {
       case 0:
         return SignatureType.Unknown;
@@ -213,7 +216,10 @@ extension TssProtocolExtension on TssProtocol {
     }
   }
 
-  static TssProtocol fromInt(int value) {
+  static TssProtocol fromInt(int? value) {
+    if (value == null) {
+      return TssProtocol.Default;
+    }
     switch (value) {
       case 0:
         return TssProtocol.Default;

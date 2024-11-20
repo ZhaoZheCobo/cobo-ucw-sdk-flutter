@@ -220,9 +220,9 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
 
 SignDetail _$SignDetailFromJson(Map<String, dynamic> json) => SignDetail(
       signatureType: SignatureTypeExtension.fromInt(
-          (json['signature_type'] as num).toInt()),
+          (json['signature_type'] as num?)?.toInt()),
       tssProtocol:
-          TssProtocolExtension.fromInt((json['tss_protocol'] as num).toInt()),
+          TssProtocolExtension.fromInt((json['tss_protocol'] as num?)?.toInt()),
       bip32PathList: (json['bip32_path_list'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -261,9 +261,9 @@ Signatures _$SignaturesFromJson(Map<String, dynamic> json) => Signatures(
       signatures:
           Signatures._signatureListFromUntypedJson(json['signatures'] as List?),
       signatureType: SignatureTypeExtension.fromInt(
-          (json['signature_type'] as num).toInt()),
+          (json['signature_type'] as num?)?.toInt()),
       tssProtocol:
-          TssProtocolExtension.fromInt((json['tss_protocol'] as num).toInt()),
+          TssProtocolExtension.fromInt((json['tss_protocol'] as num?)?.toInt()),
     );
 
 Map<String, dynamic> _$SignaturesToJson(Signatures instance) =>
