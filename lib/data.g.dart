@@ -219,8 +219,10 @@ Map<String, dynamic> _$TransactionToJson(Transaction instance) =>
     };
 
 SignDetail _$SignDetailFromJson(Map<String, dynamic> json) => SignDetail(
-      signatureType: (json['signature_type'] as num).toInt(),
-      tssProtocol: (json['tss_protocol'] as num).toInt(),
+      signatureType: SignatureTypeExtension.fromInt(
+          (json['signature_type'] as num).toInt()),
+      tssProtocol:
+          TssProtocolExtension.fromInt((json['tss_protocol'] as num).toInt()),
       bip32PathList: (json['bip32_path_list'] as List<dynamic>?)
           ?.map((e) => e as String)
           .toList(),
@@ -234,25 +236,41 @@ SignDetail _$SignDetailFromJson(Map<String, dynamic> json) => SignDetail(
 
 Map<String, dynamic> _$SignDetailToJson(SignDetail instance) =>
     <String, dynamic>{
-      'signature_type': instance.signatureType,
-      'tss_protocol': instance.tssProtocol,
+      'signature_type': _$SignatureTypeEnumMap[instance.signatureType]!,
+      'tss_protocol': _$TssProtocolEnumMap[instance.tssProtocol]!,
       'bip32_path_list': instance.bip32PathList,
       'msg_hash_list': instance.msgHashList,
       'tweak_list': instance.tweakList,
     };
 
+const _$SignatureTypeEnumMap = {
+  SignatureType.Unknown: 'Unknown',
+  SignatureType.ECDSA: 'ECDSA',
+  SignatureType.EdDSA: 'EdDSA',
+  SignatureType.Schnorr: 'Schnorr',
+};
+
+const _$TssProtocolEnumMap = {
+  TssProtocol.Default: 'Default',
+  TssProtocol.GG18: 'GG18',
+  TssProtocol.Lindell: 'Lindell',
+  TssProtocol.EdDSATSS: 'EdDSATSS',
+};
+
 Signatures _$SignaturesFromJson(Map<String, dynamic> json) => Signatures(
       signatures:
           Signatures._signatureListFromUntypedJson(json['signatures'] as List?),
-      signatureType: (json['signature_type'] as num?)?.toInt(),
-      tssProtocol: (json['tss_protocol'] as num?)?.toInt(),
+      signatureType: SignatureTypeExtension.fromInt(
+          (json['signature_type'] as num).toInt()),
+      tssProtocol:
+          TssProtocolExtension.fromInt((json['tss_protocol'] as num).toInt()),
     );
 
 Map<String, dynamic> _$SignaturesToJson(Signatures instance) =>
     <String, dynamic>{
       'signatures': instance.signatures,
-      'signature_type': instance.signatureType,
-      'tss_protocol': instance.tssProtocol,
+      'signature_type': _$SignatureTypeEnumMap[instance.signatureType],
+      'tss_protocol': _$TssProtocolEnumMap[instance.tssProtocol],
     };
 
 Signature _$SignatureFromJson(Map<String, dynamic> json) => Signature(
