@@ -30,12 +30,8 @@ class UCWPublic {
   String? handler;
   final String secretsFile;
 
-  UCWPublic({required this.secretsFile});
-
-  static Future<UCWPublic> create({required String secretsFile}) async {
-    final instance = UCWPublic(secretsFile: secretsFile);
-    await instance._openPublic();
-    return instance;
+  UCWPublic({required this.secretsFile}){
+    _openPublic();
   }
 
   void dispose() async {
@@ -119,17 +115,10 @@ class UCW extends UCWPublic {
   UCW({
     required super.secretsFile,
     required this.config,
-  });
-
-  static Future<UCW> create({
-    required String secretsFile,
-    required SDKConfig config,
     required String passphrase,
     Function(ConnCode connCode, String connMessage)? connCallback,
-  }) async {
-    final instance = UCW(secretsFile: secretsFile, config: config);
-    await instance._init(passphrase, connCallback);
-    return instance;
+  }){
+    _init(passphrase, connCallback);
   }
 
   Future<void> _init(String passphrase, Function(ConnCode connCode, String connMessage)? connCallback) async {
