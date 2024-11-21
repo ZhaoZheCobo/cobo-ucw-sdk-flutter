@@ -18,9 +18,13 @@ dependencies:
       ref: master  # Replace "master" with a specific branch, tag, or commit hash
 ```
 
-In the ref parameter, you can specify a branch (`master`), a tag (`v0.1.0`), or a commit hash (`0ca5228b3e0c98b7ab9c4ed99a5bf198a911ba33`).
+You can specify the version using:
 
-2 From the terminal: Run `flutter pub get`
+- Branch name:  `ref: master`
+- Tag: `ref: v0.1.0`
+- Commit hash: `ref: e68a9dd09aa20b8f4e864ae149a797c59fe7d937`
+
+2 From the terminal, run `flutter pub get`.
 
 ## Usage
 
@@ -44,8 +48,3 @@ try {
     print('Failed to initialize secrets: $e');
 }
 ```
-
-##  Notice
-
-Please note that the new UCW SDK has not been released yet, so it is not functional at the moment.
-Please be patient and wait for its release.
