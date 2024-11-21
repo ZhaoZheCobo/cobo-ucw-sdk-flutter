@@ -65,8 +65,7 @@ class _UCWDemoState extends State<UCWDemo> {
   }
 }
 
-//String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
-String secretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4.db';
+String secretsFile = 'secrets.db';
 String passphrase = '1234567890123456';
 UCW? instanceUCW;
 
@@ -74,22 +73,19 @@ class DoUCW {
 
   Future<String> doMethods() async {
     String resultStr = '';
-    //await setLogger();
-    print('start setLogger');
     await setLogger((level, message) {
       print('UCW Demo -> Level: $level, Message: $message');
     });
     resultStr += await doInitializeSecrets();
     resultStr += await doInit();
-   //resultStr += await doGetTSSRequests();
+
+    //resultStr += await doGetTSSRequests();
     //resultStr += await doListPendingTSSRequests();
-    //sleep(const Duration(seconds: 3));
     //resultStr += await doApproveTSSRequests();
     //resultStr += await doRejectTSSRequests();
 
-    resultStr += await doGetTransactions();
+    //resultStr += await doGetTransactions();
     //resultStr += await doListPendingTransactions();
-    //sleep(const Duration(seconds: 3));
     //resultStr += await doApproveTransactions();
     //resultStr += await doRejectTransactions();
 

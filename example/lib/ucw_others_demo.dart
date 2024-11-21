@@ -63,10 +63,8 @@ class _UCWOthersDemoState extends State<UCWOthersDemo> {
   }
 }
 
-//String secretsFile = '~/ucw_sdk_flutter_plugin/secrets.db';
-//String newSecretsFile = '~/ucw_sdk_flutter_plugin/secrets1.db';
-String secretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4.db';
-String newSecretsFile = '/Users/zhaozhe/waas2/ucw_flutter/secrets4-1.db';
+String secretsFile = 'secrets.db';
+String newSecretsFile = 'secrets1.db';
 String passphrase = '1234567890123456';
 String exportPassphrase = 'ABCDEFGHIJKLMNOP';
 UCW? instanceUCW;
