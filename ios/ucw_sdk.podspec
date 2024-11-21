@@ -19,6 +19,17 @@ A new Flutter plugin project.
 
   s.vendored_framework = "Frameworks/TSSSDK.xcframework"
   
+  tsssdk_url = 'https://cobo-tss-node.s3.amazonaws.com/sdk/v0.10.0/cobo-tss-sdk-v2-ios-v0.10.0.zip'
+  s.prepare_command = <<-CMD
+    rm -rf Frameworks
+    mkdir -p Frameworks && cd Frameworks
+    curl -L #{tsssdk_url} -o tsssdk.zip
+    unzip -o tsssdk.zip
+    mv cobo-tss-sdk-v2-ios/* .
+    rm -rf cobo-tss-sdk-v2-ios
+    rm tsssdk.zip
+  CMD
+
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
   s.swift_version = '5.0'
