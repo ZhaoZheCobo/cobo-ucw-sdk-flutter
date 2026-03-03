@@ -178,7 +178,7 @@ class DoUCWRecovery {
 
       resultStr += ('Recovering private keys...\n');
       List<PrivateKeyInfo> rKeys = await recoveryKey.recoverPrivateKeys(addressInfos);
-      resultStr += ('Recovered private keys: $resultStr\n');
+      resultStr += ('Recovered private keys: ${rKeys.length}\n');
 
       rKeys.forEach((keyInfo) {
         resultStr += ('bip32Path: ${keyInfo.bip32Path}\n');

@@ -169,14 +169,14 @@ class DoUCW {
       resultStr += 'Successfully fetched pending TSS requests: ${tssRequests.length} requests\n';
       for (var tssRequest in tssRequests) {
         resultStr += 'tssRequest ID: ${tssRequest.tssRequestID}, Status: ${tssRequest.status}\n';
-        for (var group in tssRequest.results!) {
+        for (var group in tssRequest.results ?? []) {
           resultStr += 'Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}, type: ${group.type}\n';
-          for (var participant in group.participants!) {
+          for (var participant in group.participants ?? []) {
             resultStr += 'participant tssNodeID: ${participant.tssNodeID}, shareID: ${participant.shareID}, sharePubKey: ${participant.sharePubKey} \n';
           }
         }
 
-        for (var failedReason in tssRequest.failedReasons!) {
+        for (var failedReason in tssRequest.failedReasons ?? []) {
           resultStr += 'failedReason: $failedReason \n';
         }
       }
@@ -199,14 +199,14 @@ class DoUCW {
       resultStr += 'Successfully fetched TSS requests: ${tssRequests.length} requests\n';
       for (var tssRequest in tssRequests) {
         resultStr += 'tssRequest ID: ${tssRequest.tssRequestID}, Status: ${tssRequest.status}\n';
-        for (var group in tssRequest.results!) {
+        for (var group in tssRequest.results ?? []) {
           resultStr += 'Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}, type: ${group.type}\n';
-          for (var participant in group.participants!) {
+          for (var participant in group.participants ?? []) {
             resultStr += 'participant tssNodeID: ${participant.tssNodeID}, shareID: ${participant.shareID}, sharePubKey: ${participant.sharePubKey} \n';
           }
         }
 
-        for (var failedReason in tssRequest.failedReasons!) {
+        for (var failedReason in tssRequest.failedReasons ?? []) {
           resultStr += 'failedReason: $failedReason \n';
         }
       }
@@ -264,18 +264,18 @@ class DoUCW {
       resultStr += 'Successfully fetched pending transactions: ${transactions.length} transactions\n';
      for (var transaction in transactions) {
         resultStr += 'transaction ID: ${transaction.transactionID}, Status: ${transaction.status}\n';
-        for (var signatures in transaction.results!) {
+        for (var signatures in transaction.results ?? []) {
           resultStr += 'signatureType: ${signatures.signatureType}, tssProtocol: ${signatures.tssProtocol}\n';
-          for (var signature in signatures.signatures!) {
+          for (var signature in signatures.signatures ?? []) {
             resultStr += 'bip32Path: ${signature.bip32Path}, msgHash: ${signature.msgHash}, tweak: ${signature.tweak}, signature: ${signature.signature}, signatureRecovery: ${signature.signatureRecovery}  \n';
           }
         }
 
-        for (var failedReason in transaction.failedReasons!) {
+        for (var failedReason in transaction.failedReasons ?? []) {
           resultStr += 'failedReason: $failedReason \n';
         }
 
-        for (var signDetail in transaction.signDetails!) {
+        for (var signDetail in transaction.signDetails ?? []) {
           resultStr += 'signatureType: ${signDetail.signatureType}, tssProtocol: ${signDetail.tssProtocol}\n';
           resultStr += 'bip32PathList: ${signDetail.bip32PathList}, msgHashList: ${signDetail.msgHashList}, tweakList: ${signDetail.tweakList}\n';
         }
@@ -299,18 +299,18 @@ class DoUCW {
       resultStr += 'Successfully fetched transactions: ${transactions.length} transactions\n';
       for (var transaction in transactions) {
         resultStr += 'transaction ID: ${transaction.transactionID}, Status: ${transaction.status}\n';
-        for (var signatures in transaction.results!) {
+        for (var signatures in transaction.results ?? []) {
           resultStr += 'signatureType: ${signatures.signatureType}, tssProtocol: ${signatures.tssProtocol}\n';
-          for (var signature in signatures.signatures!) {
+          for (var signature in signatures.signatures ?? []) {
             resultStr += 'bip32Path: ${signature.bip32Path}, msgHash: ${signature.msgHash}, tweak: ${signature.tweak}, signature: ${signature.signature}, signatureRecovery: ${signature.signatureRecovery}  \n';
           }
         }
 
-        for (var failedReason in transaction.failedReasons!) {
+        for (var failedReason in transaction.failedReasons ?? []) {
           resultStr += 'failedReason: $failedReason \n';
         }
 
-        for (var signDetail in transaction.signDetails!) {
+        for (var signDetail in transaction.signDetails ?? []) {
           resultStr += 'signatureType: ${signDetail.signatureType}, tssProtocol: ${signDetail.tssProtocol}\n';
           resultStr += 'bip32PathList: ${signDetail.bip32PathList}, msgHashList: ${signDetail.msgHashList}, tweakList: ${signDetail.tweakList}\n';
         }
