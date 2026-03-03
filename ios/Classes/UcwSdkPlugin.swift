@@ -67,7 +67,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     case "recoverPrivateKeys":
         recoverPrivateKeys(arguments: arguments, flutterResult: result)
     case "cleanRecoveryKeyShares":
-        cleanRecoveryKeyShares()
+        cleanRecoveryKeyShares(flutterResult: result)
     case "importSecrets":
         importSecrets(arguments: arguments, flutterResult: result)
     case "getSDKInfo":
@@ -236,7 +236,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
   func listPendingTransactions(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
     guard let handler = arguments["handler"] as? String,
       let timeout = arguments["timeout"] as? Int32 else {
-      flutterResult(FlutterError(code: "IInvalid arguments", message: "Missing arguments", details: nil))
+      flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
       return
     }
     TssListPendingTransactions(handler, timeout, TssCallbackWithData(flutterResult: flutterResult))
@@ -362,8 +362,9 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     self._handleTssResultWithData(tssResult: TssRecoverPrivateKeys(tssKeyShareGroupID, jsonAddressInfos), flutterResult: flutterResult)
   }
 
-  func cleanRecoveryKeyShares() {
+  func cleanRecoveryKeyShares(flutterResult: @escaping FlutterResult) {
     TssCleanRecoveryKeyShares()
+    flutterResult(nil)
   }
 
   // import
@@ -412,6 +413,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     let data = tssResult.data
     if data.isEmpty {
       flutterResult(FlutterError(code: "TSSSDK error", message: "No data in result", details: nil))
+      return
     }
 
     var result: [String: Any]?
