@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
 import 'package:ucw_sdk/data.dart';
+import 'secrets_path.dart';
 
 class UCWRecoveryDemo extends StatefulWidget {
   const UCWRecoveryDemo({super.key});
@@ -63,7 +64,6 @@ class _UCWRecoveryDemoState extends State<UCWRecoveryDemo> {
   }
 }
 
-String secretsFile = 'secrets.db';
 String passphrase = '1234567890123456';
 String exportPassphrase = 'ABCDEFGHIJKLMNOP';
 UCW? instanceUCW;
@@ -134,6 +134,7 @@ class DoUCWRecovery {
         return resultStr;
       } 
 
+      final secretsFile = await getSecretsFilePath();
       final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
       instanceUCW = await UCW.create(secretsFile: secretsFile, config: sdkConfig, passphrase: passphrase, connCallback:
       (connCode, message) async {

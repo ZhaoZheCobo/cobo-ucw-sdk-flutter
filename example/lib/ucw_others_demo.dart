@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
 import 'package:ucw_sdk/data.dart';
+import 'secrets_path.dart';
 
 class UCWOthersDemo extends StatefulWidget {
   const UCWOthersDemo({super.key});
@@ -63,8 +64,6 @@ class _UCWOthersDemoState extends State<UCWOthersDemo> {
   }
 }
 
-String secretsFile = 'secrets.db';
-String newSecretsFile = 'secrets1.db';
 String passphrase = '1234567890123456';
 String exportPassphrase = 'ABCDEFGHIJKLMNOP';
 UCW? instanceUCW;
@@ -102,6 +101,7 @@ class DoUCWOthers {
         return resultStr;
       } 
 
+      final secretsFile = await getSecretsFilePath();
       final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
       instanceUCW = await UCW.create(secretsFile: secretsFile, config: sdkConfig, passphrase: passphrase, connCallback:
       (connCode, message) async {
@@ -124,7 +124,8 @@ class DoUCWOthers {
       resultStr += 'Secrets exported successfully:\n';
       print('$exportResult\n');
 
-      resultStr += await doImportSecrets(exportResult!, exportPassphrase, newSecretsFile, passphrase);
+      final newSecretsPath = await getSecretsFilePath('secrets1.db');
+      resultStr += await doImportSecrets(exportResult!, exportPassphrase, newSecretsPath, passphrase);
       return resultStr;
     } catch (e) {
       resultStr += 'Failed to doExportSecrets: $e\n';

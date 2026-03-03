@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
+import 'secrets_path.dart';
 
 class UCWPublicDemo extends StatefulWidget {
   const UCWPublicDemo({super.key});
@@ -62,7 +63,6 @@ class _UCWPublicDemoState extends State<UCWPublicDemo> {
   }
 }
 
-String secretsFile = 'secrets.db';
 late UCWPublic instanceUCWPublic;
 
 class DoUCWPublic {
@@ -81,6 +81,7 @@ class DoUCWPublic {
     String resultStr = '';
     try {
       resultStr += 'Do init\n';
+      final secretsFile = await getSecretsFilePath();
       instanceUCWPublic = await UCWPublic.create(secretsFile: secretsFile);
       return resultStr;
     } catch (e) {

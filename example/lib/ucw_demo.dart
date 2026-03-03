@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
+import 'secrets_path.dart';
 import 'package:ucw_sdk/data.dart';
 
 class UCWDemo extends StatefulWidget {
@@ -65,7 +66,6 @@ class _UCWDemoState extends State<UCWDemo> {
   }
 }
 
-String secretsFile = 'secrets.db';
 String passphrase = '1234567890123456';
 UCW? instanceUCW;
 
@@ -103,6 +103,7 @@ class DoUCW {
     String resultStr = '';
     try {
       resultStr += 'Do initialize secrets\n';
+      final secretsFile = await getSecretsFilePath();
       final result = await initializeSecrets(secretsFile, passphrase);
       resultStr += 'TSS Node ID: $result\n';
       return resultStr;
@@ -121,6 +122,7 @@ class DoUCW {
         return resultStr;
       } 
 
+      final secretsFile = await getSecretsFilePath();
       final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
       instanceUCW = await UCW.create(secretsFile: secretsFile, config: sdkConfig, passphrase: passphrase, connCallback:
       (connCode, message) async {
