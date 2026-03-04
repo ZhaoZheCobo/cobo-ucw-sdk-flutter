@@ -14,16 +14,38 @@ buildscript {
     }
 }
 
+// Publish the local TSSSDK.aar to the local Maven repository to avoid "Direct local .aar file dependencies are not supported when building an AAR"
+def localMavenDir = project.file("build/localMaven")
+
 rootProject.allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri(localMavenDir) }
     }
 }
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
-
+def aarDir = new File(localMavenDir, "com/cobo/tsssdk/1.0")
+aarDir.mkdirs()
+def srcAar = new File(project.projectDir, "libs/TSSSDK.aar")
+if (srcAar.exists()) {
+    project.copy {
+        from srcAar
+        into aarDir
+        rename 'TSSSDK.aar', 'tsssdk-1.0.aar'
+    }
+    new File(aarDir, "tsssdk-1.0.pom").text = """<?xml version="1.0" encoding="UTF-8"?>
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.cobo</groupId>
+  <artifactId>tsssdk</artifactId>
+  <version>1.0</version>
+  <packaging>aar</packaging>
+</project>
+"""
+}
 android {
     if (project.android.hasProperty("namespace")) {
         namespace 'com.cobo.ucw_sdk'
@@ -50,5 +72,6 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.aar', '*.jar'])
+    implementation 'com.cobo:tsssdk:1.0'
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
