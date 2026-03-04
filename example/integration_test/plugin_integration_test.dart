@@ -6,20 +6,29 @@
 // For more information about Flutter integration tests, please see
 // https://docs.flutter.dev/cookbook/testing/integration/introduction
 
-
+import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'package:ucw_sdk/data.dart';
 import 'package:ucw_sdk/ucw_sdk.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('getPlatformVersion test', (WidgetTester tester) async {
-    final UcwSdk plugin = UcwSdk();
-    final String? version = await plugin.getPlatformVersion();
+    final String? version = await getPlatformVersion();
+    debugPrint('version: $version');
     // The version string depends on the host platform running the test, so
     // just assert that some non-empty string is returned.
-    expect(version?.isNotEmpty, true);
+    expect(version, isNotNull);
+    expect(version!.isNotEmpty, true);
+  });
+
+  testWidgets('getSDKInfo test', (WidgetTester tester) async {
+    final SDKInfo sdkInfo = await getSDKInfo();
+    debugPrint('SDKInfo: ${sdkInfo.version}');
+    expect(sdkInfo.version, isNotNull);
+    expect(sdkInfo.version.isNotEmpty, true);
   });
 }
