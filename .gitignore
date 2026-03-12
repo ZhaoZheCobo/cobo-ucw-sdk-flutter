@@ -30,5 +30,6 @@ build/
 
 # Android / Gradle (local cache and build artifacts, do not commit)
 **/.gradle/
+android/libs/
 
 ios/Frameworks/
