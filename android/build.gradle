@@ -27,6 +27,35 @@ rootProject.allprojects {
 
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+
+// Download TSSSDK.aar if not present (similar to iOS podspec prepare_command)
+def tssSdkUrl = 'https://download.tss.1cobo.com/cobo-tss-sdk-v2-android.zip'
+def libsDir = file("${project.projectDir}/libs")
+def aarFile = file("${libsDir}/TSSSDK.aar")
+
+if (!aarFile.exists()) {
+    println "Downloading TSSSDK from ${tssSdkUrl}..."
+    libsDir.mkdirs()
+    def zipFile = file("${libsDir}/tsssdk.zip")
+
+    new URL(tssSdkUrl).withInputStream { inputStream ->
+        zipFile.withOutputStream { outputStream ->
+            outputStream << inputStream
+        }
+    }
+
+    ant.unzip(src: zipFile.absolutePath, dest: libsDir.absolutePath, overwrite: "true")
+
+    // Flatten subdirectory (e.g. cobo-tss-sdk-v2-android/TSSSDK.aar -> libs/TSSSDK.aar)
+    libsDir.listFiles()?.findAll { it.isDirectory() }?.each { subDir ->
+        subDir.listFiles()?.each { f -> f.renameTo(new File(libsDir, f.name)) }
+        subDir.delete()
+    }
+
+    zipFile.delete()
+    println "TSSSDK downloaded successfully."
+}
+
 def aarDir = new File(localMavenDir, "com/cobo/tsssdk/1.0")
 aarDir.mkdirs()
 def srcAar = new File(project.projectDir, "libs/TSSSDK.aar")
