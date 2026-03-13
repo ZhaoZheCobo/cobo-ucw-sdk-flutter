@@ -7,6 +7,8 @@ import 'ucw_demo.dart';
 import 'ucw_public_demo.dart';
 import 'ucw_recovery_demo.dart';
 import 'ucw_others_demo.dart';
+import 'ucw_tss_request_demo.dart';
+import 'ucw_transaction_demo.dart';
 
 void main() {
   runApp(const MyApp());
@@ -107,6 +109,24 @@ class MainPage extends StatelessWidget {
                 );
               },
               child: const Text('UCW Others Demo'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UCWTSSRequestDemo()),
+                );
+              },
+              child: const Text('UCW TSS Request'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const UCWTransactionDemo()),
+                );
+              },
+              child: const Text('UCW Transaction'),
             ),
             const SizedBox(height: 20),
           ],
