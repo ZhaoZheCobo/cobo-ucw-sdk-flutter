@@ -90,6 +90,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
   func open(arguments: Dictionary<String, Any>, flutterResult: @escaping FlutterResult) {
     guard let configEnv = arguments["config.env"] as? String,
       let configDebug = arguments["config.debug"] as? Bool,
+      let configUcwMode = arguments["config.ucwMode"] as? Bool,
       let secretsFile = arguments["secretsFile"] as? String,
       let passphrase = arguments["passphrase"] as? String else {
       flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
@@ -99,6 +100,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     let config = TssSDKConfig()
     config.env = configEnv
     config.debug = configDebug
+    config.ucwMode = configUcwMode
 
     self._handleTssResultWithData(tssResult: TssOpen(config, secretsFile, passphrase, connInstance), flutterResult: flutterResult)
   }

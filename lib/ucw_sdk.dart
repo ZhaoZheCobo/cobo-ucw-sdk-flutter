@@ -161,6 +161,7 @@ class UCW extends UCWPublic {
       final arguments = {
         'config.env': config.env.value,
         'config.debug': config.debug,
+        'config.ucwMode': config.ucwMode,
         'secretsFile': secretsFile,
         'passphrase': passphrase,
       };
