@@ -37,7 +37,8 @@ class _UCWTSSRequestDemoState extends State<UCWTSSRequestDemo> {
         return;
       }
       final secretsFile = await getSecretsFilePath();
-      final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
+      final sdkConfig =
+          SDKConfig(env: Env.development, debug: true, timeout: 30);
       instanceUCW = await UCW.create(
         secretsFile: secretsFile,
         config: sdkConfig,
@@ -73,14 +74,17 @@ class _UCWTSSRequestDemoState extends State<UCWTSSRequestDemo> {
         _appendOutput('instanceUCW not initialized\n');
         return;
       }
-      List<TSSRequest> tssRequests = await instanceUCW!.listPendingTSSRequests();
+      List<TSSRequest> tssRequests =
+          await instanceUCW!.listPendingTSSRequests();
       _appendOutput('Pending TSS requests: ${tssRequests.length}\n');
       for (var req in tssRequests) {
         _appendOutput('  ID: ${req.tssRequestID}, Status: ${req.status}\n');
         for (var group in req.results ?? []) {
-          _appendOutput('  Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}, type: ${group.type}\n');
+          _appendOutput(
+              '  Group ID: ${group.tssKeyShareGroupID}, rootPubKey: ${group.rootPubKey}, type: ${group.type}\n');
           for (var participant in group.participants ?? []) {
-            _appendOutput('  Participant tssNodeID: ${participant.tssNodeID}, shareID: ${participant.shareID}\n');
+            _appendOutput(
+                '  Participant tssNodeID: ${participant.tssNodeID}, shareID: ${participant.shareID}\n');
           }
         }
         for (var reason in req.failedReasons ?? []) {
@@ -146,7 +150,8 @@ class _UCWTSSRequestDemoState extends State<UCWTSSRequestDemo> {
                       hintText: 'Enter TSS Request ID',
                       border: OutlineInputBorder(),
                       isDense: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                     ),
                   ),
                 ),
@@ -170,7 +175,8 @@ class _UCWTSSRequestDemoState extends State<UCWTSSRequestDemo> {
                   readOnly: true,
                   maxLines: null,
                   expands: true,
-                  decoration: const InputDecoration.collapsed(hintText: 'Output will appear here...'),
+                  decoration: const InputDecoration.collapsed(
+                      hintText: 'Output will appear here...'),
                 ),
               ),
             ),

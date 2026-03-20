@@ -100,7 +100,7 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     let config = TssSDKConfig()
     config.env = configEnv
     config.debug = configDebug
-    config.ucwMode = configUcwMode
+    config.ucwMode = configUcwMode ?? true
 
     self._handleTssResultWithData(tssResult: TssOpen(config, secretsFile, passphrase, connInstance), flutterResult: flutterResult)
   }
