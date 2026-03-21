@@ -200,15 +200,17 @@ class UcwSdkPlugin : FlutterPlugin, MethodCallHandler {
         val configEnv = args["config.env"] as? String
         val configDebug = args["config.debug"] as? Boolean
         val secretsFile = args["secretsFile"] as? String
+        val configUcwMode = args["config.ucwMode"] as? Boolean
         val passphrase = args["passphrase"] as? String
-        if (configEnv == null || configDebug == null || secretsFile == null || passphrase == null) {
+        if (configEnv == null || configDebug == null || configUcwMode == null || secretsFile == null || passphrase == null) {
             result.error("Invalid arguments", "Missing arguments", null)
             return
         }
         val config = SDKConfig()
         config.env = configEnv
         config.debug = configDebug
-
+        config.ucwMode = configUcwMode
+        
         val connCallback = object : Callback {
             override fun callback(code: Int, message: String?) {
                 val data = mapOf<String, Any>(

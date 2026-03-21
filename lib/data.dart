@@ -6,15 +6,17 @@ class SDKConfig {
   final Env env;
   final int timeout;
   final bool debug;
+  final bool ucwMode;
 
   SDKConfig({
     required this.env,
     required this.timeout,
     required this.debug,
+    this.ucwMode = true,
   });
 }
 
-enum Env { development, production, sandbox, local}
+enum Env { development, production, sandbox, local }
 
 extension EnvExtension on Env {
   String get value {
@@ -296,7 +298,8 @@ class RecoverResult {
 
   RecoverResult({this.data});
 
-  static List<PrivateKeyInfo> _privateKeyInfoListFromUntypedJson(List<dynamic>? json) {
+  static List<PrivateKeyInfo> _privateKeyInfoListFromUntypedJson(
+      List<dynamic>? json) {
     return (json ?? []).map((e) => PrivateKeyInfo.fromUntypedJson(e)).toList();
   }
 
@@ -375,8 +378,11 @@ class GroupResult {
 
   GroupResult({this.data});
 
-  static List<TSSKeyShareGroup> _tssKeyShareGroupListFromUntypedJson(List<dynamic>? json) {
-    return (json ?? []).map((e) => TSSKeyShareGroup.fromUntypedJson(e)).toList();
+  static List<TSSKeyShareGroup> _tssKeyShareGroupListFromUntypedJson(
+      List<dynamic>? json) {
+    return (json ?? [])
+        .map((e) => TSSKeyShareGroup.fromUntypedJson(e))
+        .toList();
   }
 
   factory GroupResult.fromJson(Map<String, dynamic> json) =>
@@ -407,8 +413,7 @@ class TSSKeyShareGroup {
   final String curve;
   @JsonKey(name: 'threshold')
   final int threshold;
-  @JsonKey(name: 'participants',
-    fromJson: _sharePublicDataListFromUntypedJson)
+  @JsonKey(name: 'participants', fromJson: _sharePublicDataListFromUntypedJson)
   final List<SharePublicData>? participants;
 
   TSSKeyShareGroup({
@@ -425,7 +430,8 @@ class TSSKeyShareGroup {
     this.participants,
   });
 
-  static List<SharePublicData> _sharePublicDataListFromUntypedJson(List<dynamic>? json) {
+  static List<SharePublicData> _sharePublicDataListFromUntypedJson(
+      List<dynamic>? json) {
     return (json ?? []).map((e) => SharePublicData.fromUntypedJson(e)).toList();
   }
 
@@ -466,7 +472,7 @@ class SharePublicData {
 class TSSRequestResult {
   @JsonKey(name: 'data', fromJson: _tssRequestListFromUntypedJson)
   final List<TSSRequest>? data;
- 
+
   TSSRequestResult({this.data});
 
   static List<TSSRequest> _tssRequestListFromUntypedJson(List<dynamic>? json) {
@@ -485,7 +491,7 @@ class TSSRequest {
   final String tssRequestID;
   @JsonKey(name: 'status', fromJson: StatusExtension.fromInt)
   final Status status;
-  
+
   // todo
 
   @JsonKey(name: 'results', fromJson: _tssKeyShareGroupListFromUntypedJson)
@@ -496,13 +502,15 @@ class TSSRequest {
   TSSRequest({
     required this.tssRequestID,
     required this.status,
-    
     this.results,
     this.failedReasons,
   });
 
-  static List<TSSKeyShareGroup> _tssKeyShareGroupListFromUntypedJson(List<dynamic>? json) {
-    return (json ?? []).map((e) => TSSKeyShareGroup.fromUntypedJson(e)).toList();
+  static List<TSSKeyShareGroup> _tssKeyShareGroupListFromUntypedJson(
+      List<dynamic>? json) {
+    return (json ?? [])
+        .map((e) => TSSKeyShareGroup.fromUntypedJson(e))
+        .toList();
   }
 
   factory TSSRequest.fromUntypedJson(Map<dynamic, dynamic> json) =>
@@ -522,7 +530,8 @@ class TransactionResult {
 
   TransactionResult({this.data});
 
-  static List<Transaction> _transactionListFromUntypedJson(List<dynamic>? json) {
+  static List<Transaction> _transactionListFromUntypedJson(
+      List<dynamic>? json) {
     return (json ?? []).map((e) => Transaction.fromUntypedJson(e)).toList();
   }
 
@@ -540,7 +549,7 @@ class Transaction {
   final Status status;
 
   // todo
-  
+
   @JsonKey(name: 'sign_details', fromJson: _signDetailListFromUntypedJson)
   final List<SignDetail>? signDetails;
   @JsonKey(name: 'results', fromJson: _signaturesListFromUntypedJson)
@@ -551,7 +560,6 @@ class Transaction {
   Transaction({
     required this.transactionID,
     required this.status,
-
     this.signDetails,
     this.results,
     this.failedReasons,
@@ -596,10 +604,10 @@ class SignDetail {
   });
 
   factory SignDetail.fromUntypedJson(Map<dynamic, dynamic> json) =>
-    _$SignDetailFromJson(Map<String, dynamic>.from(json));
+      _$SignDetailFromJson(Map<String, dynamic>.from(json));
 
   factory SignDetail.fromJson(Map<String, dynamic> json) =>
-    _$SignDetailFromJson(json);
+      _$SignDetailFromJson(json);
 
   Map<String, dynamic> toJson() => _$SignDetailToJson(this);
 }

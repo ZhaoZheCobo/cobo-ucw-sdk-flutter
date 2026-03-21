@@ -14,7 +14,8 @@ class UCWTransactionDemo extends StatefulWidget {
 
 class _UCWTransactionDemoState extends State<UCWTransactionDemo> {
   final TextEditingController _outputController = TextEditingController();
-  final TextEditingController _transactionIdController = TextEditingController();
+  final TextEditingController _transactionIdController =
+      TextEditingController();
 
   @override
   void dispose() {
@@ -37,7 +38,8 @@ class _UCWTransactionDemoState extends State<UCWTransactionDemo> {
         return;
       }
       final secretsFile = await getSecretsFilePath();
-      final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
+      final sdkConfig =
+          SDKConfig(env: Env.development, debug: true, timeout: 30);
       instanceUCW = await UCW.create(
         secretsFile: secretsFile,
         config: sdkConfig,
@@ -73,22 +75,27 @@ class _UCWTransactionDemoState extends State<UCWTransactionDemo> {
         _appendOutput('instanceUCW not initialized\n');
         return;
       }
-      List<Transaction> transactions = await instanceUCW!.listPendingTransactions();
+      List<Transaction> transactions =
+          await instanceUCW!.listPendingTransactions();
       _appendOutput('Pending transactions: ${transactions.length}\n');
       for (var tx in transactions) {
         _appendOutput('  ID: ${tx.transactionID}, Status: ${tx.status}\n');
         for (var result in tx.results ?? []) {
-          _appendOutput('  signatureType: ${result.signatureType}, tssProtocol: ${result.tssProtocol}\n');
+          _appendOutput(
+              '  signatureType: ${result.signatureType}, tssProtocol: ${result.tssProtocol}\n');
           for (var sig in result.signatures ?? []) {
-            _appendOutput('  bip32Path: ${sig.bip32Path}, msgHash: ${sig.msgHash}\n');
+            _appendOutput(
+                '  bip32Path: ${sig.bip32Path}, msgHash: ${sig.msgHash}\n');
           }
         }
         for (var reason in tx.failedReasons ?? []) {
           _appendOutput('  failedReason: $reason\n');
         }
         for (var signDetail in tx.signDetails ?? []) {
-          _appendOutput('  signatureType: ${signDetail.signatureType}, tssProtocol: ${signDetail.tssProtocol}\n');
-          _appendOutput('  bip32PathList: ${signDetail.bip32PathList}, msgHashList: ${signDetail.msgHashList}\n');
+          _appendOutput(
+              '  signatureType: ${signDetail.signatureType}, tssProtocol: ${signDetail.tssProtocol}\n');
+          _appendOutput(
+              '  bip32PathList: ${signDetail.bip32PathList}, msgHashList: ${signDetail.msgHashList}\n');
         }
       }
     } catch (e) {
@@ -150,7 +157,8 @@ class _UCWTransactionDemoState extends State<UCWTransactionDemo> {
                       hintText: 'Enter Transaction ID',
                       border: OutlineInputBorder(),
                       isDense: true,
-                      contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+                      contentPadding:
+                          EdgeInsets.symmetric(horizontal: 8, vertical: 10),
                     ),
                   ),
                 ),
@@ -174,7 +182,8 @@ class _UCWTransactionDemoState extends State<UCWTransactionDemo> {
                   readOnly: true,
                   maxLines: null,
                   expands: true,
-                  decoration: const InputDecoration.collapsed(hintText: 'Output will appear here...'),
+                  decoration: const InputDecoration.collapsed(
+                      hintText: 'Output will appear here...'),
                 ),
               ),
             ),
