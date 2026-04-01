@@ -19,7 +19,7 @@ A new Flutter plugin project.
 
   s.vendored_framework = "Frameworks/TSSSDK.xcframework"
   
-  tsssdk_url = 'https://cobo-tss-node.s3.amazonaws.com/sdk/v0.12.10/cobo-tss-sdk-v2-ios-v0.12.10.zip'
+  tsssdk_url = 'https://cobo-tss-node.s3.amazonaws.com/sdk/v0.12.13/cobo-tss-sdk-v2-ios-v0.12.13.zip'
   s.prepare_command = <<-CMD
     rm -rf Frameworks
     mkdir -p Frameworks && cd Frameworks
