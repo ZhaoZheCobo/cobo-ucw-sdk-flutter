@@ -28,14 +28,6 @@ class _UCWOthersDemoState extends State<UCWOthersDemo> {
     });
   }
 
-  Future<void> _closeUCW() async {
-    final doUCWOthers = DoUCWOthers();
-    String result = await doUCWOthers.doClose();
-    setState(() {
-      _displayController.text = result;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,11 +41,6 @@ class _UCWOthersDemoState extends State<UCWOthersDemo> {
             ElevatedButton(
               onPressed: _executeMethods,
               child: const Text('test UCW Others methods'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _closeUCW,
-              child: const Text('close UCW'),
             ),
             const SizedBox(height: 20),
             Container(
@@ -82,37 +69,20 @@ String exportPassphrase = 'ABCDEFGHIJKLMNOP';
 UCW? instanceUCW;
 
 class DoUCWOthers {
-  Future<String> doMethods() async {
-    await setLogger((level, message) {
-      print('UCW Demo -> Level: $level, Message: $message');
-    });
 
+  Future<String> doMethods() async {
     String resultStr = '';
     resultStr += await doGetSDKInfo();
     resultStr += await doInit();
-    // resultStr += await doExportSecrets();
-    // resultStr += await doClose();
+    resultStr += await doExportSecrets();
     return resultStr;
-  }
-
-  Future<String> doClose() async {
-    String resultStr = '';
-    try {
-      resultStr += 'Do close\n';
-      await instanceUCW?.dispose();
-      instanceUCW = null;
-      return resultStr;
-    } catch (e) {
-      resultStr += 'Failed to doClose: $e\n';
-      return resultStr;
-    }
   }
 
   Future<String> doGetSDKInfo() async {
     String resultStr = '';
     try {
       resultStr += 'Do getSDKInfo\n';
-      final sdkInfo = await getSDKInfo();
+      final sdkInfo =  await getSDKInfo();
       var version = sdkInfo.version;
       resultStr += 'SDK Info: $version\n';
       return resultStr;
@@ -127,19 +97,16 @@ class DoUCWOthers {
     try {
       resultStr += 'Do init\n';
       if (instanceUCW != null) {
-        resultStr += 'InstanceUCW exists\n';
+        resultStr += 'InstanceUCW exists\n';       
         return resultStr;
-      }
+      } 
 
       final secretsFile = await getSecretsFilePath();
       final sdkConfig = SDKConfig(env: Env.local, debug: true, timeout: 30);
-      instanceUCW = await UCW.create(
-          secretsFile: secretsFile,
-          config: sdkConfig,
-          passphrase: passphrase,
-          connCallback: (connCode, message) async {
-            print('UCW Demo -> Conn Code: $connCode, Message: $message');
-          });
+      instanceUCW = await UCW.create(secretsFile: secretsFile, config: sdkConfig, passphrase: passphrase, connCallback:
+      (connCode, message) async {
+        print('UCW Demo -> Conn Code: $connCode, Message: $message');
+      });
       return resultStr;
     } catch (e) {
       resultStr += 'Failed to init: $e\n';
@@ -158,8 +125,7 @@ class DoUCWOthers {
       print('$exportResult\n');
 
       final newSecretsPath = await getSecretsFilePath('secrets1.db');
-      resultStr += await doImportSecrets(
-          exportResult!, exportPassphrase, newSecretsPath, passphrase);
+      resultStr += await doImportSecrets(exportResult!, exportPassphrase, newSecretsPath, passphrase);
       return resultStr;
     } catch (e) {
       resultStr += 'Failed to doExportSecrets: $e\n';
@@ -187,4 +153,5 @@ class DoUCWOthers {
       return resultStr;
     }
   }
+
 }

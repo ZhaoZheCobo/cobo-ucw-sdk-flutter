@@ -38,7 +38,7 @@ class UCWPublic {
     return instance;
   }
 
-  Future<void> dispose() async {
+  void dispose() async {
     await _close();
   }
 
@@ -152,7 +152,7 @@ class UCW extends UCWPublic {
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() async {
     await _close();
   }
 
@@ -342,8 +342,8 @@ class UCWRecoverKey {
 
   UCWRecoverKey({required this.tssKeyShareGroupID});
 
-  Future<void> dispose() async {
-    await _cleanRecoveryKeyShares();
+  void dispose() {
+    _cleanRecoveryKeyShares();
   }
 
  Future<void> _cleanRecoveryKeyShares() async {
