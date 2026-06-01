@@ -130,6 +130,18 @@ class UcwSdkPlugin : FlutterPlugin, MethodCallHandler {
         }
     }
 
+    private fun callbackToResult(flutterResult: Result): Callback {
+        return object : Callback {
+            override fun callback(code: Int, message: String?) {
+                if (code != 0) {
+                    mainHandler.post { flutterResult.error("$code", message, null) }
+                    return
+                }
+                mainHandler.post { flutterResult.success(null) }
+            }
+        }
+    }
+
     private fun callbackWithDataToResult(flutterResult: Result): CallbackWithData {
         return object : CallbackWithData {
             override fun callback(code: Int, message: String?, data: String?) {
@@ -243,9 +255,7 @@ class UcwSdkPlugin : FlutterPlugin, MethodCallHandler {
             result.error("Invalid arguments", "Missing arguments", null)
             return
         }
-        executor.execute {
-            handleResult(Tss.close(handler), result)
-        }
+        Tss.close(handler, callbackToResult(result))
     }
 
     private fun getTSSNodeID(args: Map<String, Any>, result: Result) {
