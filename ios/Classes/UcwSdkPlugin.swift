@@ -118,7 +118,8 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
       flutterResult(FlutterError(code: "Invalid arguments", message: "Missing arguments", details: nil))
       return
     }
-    self._handleTssResult(tssResult: TssClose(handler), flutterResult: flutterResult)
+    TssClose(handler)
+    flutterResult(nil)
   }
 
   // public
