@@ -10,6 +10,9 @@ class MockUcwSdkPlatform
 
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Future<T?> call<T>(String method, [dynamic arguments]) => Future.value(null);
 }
 
 void main() {
@@ -20,10 +23,9 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    UcwSdk ucwSdkPlugin = UcwSdk();
     MockUcwSdkPlatform fakePlatform = MockUcwSdkPlatform();
     UcwSdkPlatform.instance = fakePlatform;
 
-    expect(await ucwSdkPlugin.getPlatformVersion(), '42');
+    expect(await getPlatformVersion(), '42');
   });
 }

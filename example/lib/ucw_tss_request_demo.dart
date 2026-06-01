@@ -96,6 +96,21 @@ class _UCWTSSRequestDemoState extends State<UCWTSSRequestDemo> {
     }
   }
 
+  Future<void> _close() async {
+    _appendOutput('--- close ---\n');
+    try {
+      if (instanceUCW == null) {
+        _appendOutput('instanceUCW not initialized\n');
+        return;
+      }
+      instanceUCW!.dispose();
+      instanceUCW = null;
+      _appendOutput('UCW instance closed successfully\n');
+    } catch (e) {
+      _appendOutput('Failed to close UCW instance: $e\n');
+    }
+  }
+
   Future<void> _approveTSSRequest() async {
     final id = _tssRequestIdController.text.trim();
     if (id.isEmpty) {
@@ -139,6 +154,11 @@ class _UCWTSSRequestDemoState extends State<UCWTSSRequestDemo> {
             ElevatedButton(
               onPressed: _listPendingTSSRequests,
               child: const Text('listPendingTSSRequests'),
+            ),
+            const SizedBox(height: 8),
+            ElevatedButton(
+              onPressed: _close,
+              child: const Text('close'),
             ),
             const SizedBox(height: 8),
             Row(
