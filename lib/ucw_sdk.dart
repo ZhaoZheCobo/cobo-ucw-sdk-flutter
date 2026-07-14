@@ -162,6 +162,7 @@ class UCW extends UCWPublic {
         'config.env': config.env.value,
         'config.debug': config.debug,
         'config.ucwMode': config.ucwMode,
+        if (config.webSocketURL != null) 'config.webSocketURL': config.webSocketURL,
         'secretsFile': secretsFile,
         'passphrase': passphrase,
       };

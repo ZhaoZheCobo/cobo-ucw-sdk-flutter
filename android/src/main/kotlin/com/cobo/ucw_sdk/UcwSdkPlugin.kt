@@ -213,6 +213,7 @@ class UcwSdkPlugin : FlutterPlugin, MethodCallHandler {
         val configDebug = args["config.debug"] as? Boolean
         val secretsFile = args["secretsFile"] as? String
         val configUcwMode = args["config.ucwMode"] as? Boolean
+        val configWebSocketURL = args["config.webSocketURL"] as? String
         val passphrase = args["passphrase"] as? String
         if (configEnv == null || configDebug == null || configUcwMode == null || secretsFile == null || passphrase == null) {
             result.error("Invalid arguments", "Missing arguments", null)
@@ -222,6 +223,9 @@ class UcwSdkPlugin : FlutterPlugin, MethodCallHandler {
         config.env = configEnv
         config.debug = configDebug
         config.ucwMode = configUcwMode
+        if (configWebSocketURL != null) {
+            config.webSocketURL = configWebSocketURL
+        }
         
         val connCallback = object : Callback {
             override fun callback(code: Int, message: String?) {

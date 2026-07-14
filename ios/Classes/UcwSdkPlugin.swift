@@ -101,6 +101,9 @@ public class UcwSdkPlugin: NSObject, FlutterPlugin {
     config.env = configEnv
     config.debug = configDebug
     config.ucwMode = configUcwMode ?? true
+    if let configWebSocketURL = arguments["config.webSocketURL"] as? String {
+      config.webSocketURL = configWebSocketURL
+    }
 
     self._handleTssResultWithData(tssResult: TssOpen(config, secretsFile, passphrase, connInstance), flutterResult: flutterResult)
   }

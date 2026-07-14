@@ -8,11 +8,15 @@ class SDKConfig {
   final bool debug;
   final bool ucwMode;
 
+  /// Optional; when set it overrides the websocket URL derived from [env].
+  final String? webSocketURL;
+
   SDKConfig({
     required this.env,
     required this.timeout,
     required this.debug,
     this.ucwMode = true,
+    this.webSocketURL,
   });
 }
 
